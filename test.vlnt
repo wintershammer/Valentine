@@ -1,0 +1,16 @@
+a = 2
+c = 5
+ 
+def lel(x) :
+ 
+  adder(c)
+    
+end
+
+def adder(x):
+  x + 1
+end
+
+lel(a)
+
+a
