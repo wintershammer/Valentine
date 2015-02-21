@@ -1,4 +1,3 @@
-
 grammar MyG;
 
 program : 
