@@ -5,7 +5,8 @@ An interpreted toy language using ANTLR4 for parser/lexer/AST generation
 Currently supports:
 
 
-- Add,sub,mult,div operations
+- Arithmetic add,sub,mult,div operations
+
 
 - Print statement
 
@@ -13,5 +14,5 @@ Currently supports:
 - Variable assignment
 
 
-- Functions (arity > 1, can be used as argument)
+- First class functions (with closures)
 
