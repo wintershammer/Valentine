@@ -7,9 +7,11 @@ Currently supports:
 
 - Add,sub,mult,div operations
 
+- Print statement
+
 
 - Variable assignment
 
 
-- Unary functions
+- Functions (arity > 1, can be used as argument)
 
