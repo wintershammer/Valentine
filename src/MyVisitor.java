@@ -45,7 +45,7 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		Value value = visit(ctx.expression());
 		memory.put(id, value);
 
-		return new Value();
+		return value;
 	}
 
 	@Override
@@ -209,7 +209,9 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 		if (memory.containsKey(key)) {
 			function = memory.get(key).getFunction();
+			//System.out.println("function exists");
 		}
+		
 
 		Value value;
 
@@ -217,5 +219,67 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 		return value;
 	}
+	
+	@Override
+	public Value visitAnonCreation(@NotNull MyGParser.AnonCreationContext ctx) {
 
+		//ParseTree idNode = ctx.ID(0);
+		ArrayList<ParseTree> bodyNode = new ArrayList<ParseTree>();
+		//String id = idNode.getText();
+		ArrayList<String> idParam = new ArrayList<String>();
+		
+		for(int i = 0; i < ctx.expression().size() ; i++){
+			bodyNode.add(ctx.expression(i));
+		}
+
+		for (int i = 0; i < ctx.ID().size(); i++) {
+			idParam.add(ctx.ID(i).getText());
+		}
+
+		Function function = new Function(idParam, bodyNode, this.memory);
+		Value value = new Value(function);
+		//System.out.println("created anon");
+		//memory.put(id, value);
+
+		return value;
+	}
+	
+	@Override
+	public Value visitAnonCall(@NotNull MyGParser.AnonCallContext ctx) {
+		
+		//System.out.println("Anon invoked");
+		
+		Value function = visit(ctx.anonCreation());
+
+		ArrayList<Value> parameters = new ArrayList<Value>();
+		
+		for (int i = 0; i < ctx.ID().size(); i++) {
+			String id = ctx.ID(i).getText();
+			if (memory.containsKey(id)) {
+				Value wtfs = memory.get(id);
+				parameters.add(wtfs);
+			}		
+		}
+
+		for (int i = 0; i < ctx.INT().size(); i++) {
+			Value wtfs = new Value(Integer.valueOf(ctx.INT(i).getText()));
+			parameters.add(wtfs);
+		}
+
+		
+		for (int i = 0; i < ctx.funCall().size(); i++) {
+			Value wtfs = visit(ctx.funCall(i));
+			parameters.add(wtfs);
+		}
+
+		for (int i = 0; i < ctx.funCallInt().size(); i++) {
+			Value wtfs = visit(ctx.funCallInt(i));
+			parameters.add(wtfs);
+		}
+		Value rValue = new Value();
+		
+		rValue = function.getFunction().invoke(parameters);
+
+		return rValue;
+	}
 }

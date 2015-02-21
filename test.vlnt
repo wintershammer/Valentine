@@ -6,6 +6,10 @@ def y(x):
 	x + 1
 end
 
+def h(x):
+	x + x
+end
+
 def fc(g):
 	def fcadder(a):
 		a + g
@@ -32,3 +36,8 @@ print(c)
 a = fc(5)
 b = a(100)
 print(b) 
+
+a = (lambda (x): x + x end 
+	(h(6)))
+
+print(a)

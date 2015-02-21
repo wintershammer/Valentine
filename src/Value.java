@@ -60,8 +60,11 @@ public class Value {
 		if(this.curType == ValType.DOUBLE){
 			return this.getDouble().toString();
 		}
-		if(this.curType == ValType.INTEGER){
+		else if(this.curType == ValType.INTEGER){
 			return this.getInteger().toString();
+		}
+		else if(this.curType == ValType.FUNCTION){
+			return this.getFunction().toString();
 		}
 		
 		return "NOT APPLICABLE";

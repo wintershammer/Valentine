@@ -91,10 +91,36 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code anonCall1}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCall1(@NotNull MyGParser.AnonCall1Context ctx);
+	/**
 	 * Visit a parse tree produced by the {@code paren}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParen(@NotNull MyGParser.ParenContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code anonCreation1}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCreation1(@NotNull MyGParser.AnonCreation1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#anonCreation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCreation(@NotNull MyGParser.AnonCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#anonCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCall(@NotNull MyGParser.AnonCallContext ctx);
 }

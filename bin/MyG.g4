@@ -7,6 +7,8 @@ program :
 expression : 
 	
 	'def' ID'(' ID (',' ID)* ')' ':' expression+ 'end' #funCreation
+	|anonCall #anonCall1
+	|anonCreation #anonCreation1
 	|'print' '(' ID ')' #printStatement
 	|funCallFC #funCallFC1
 	|ID				# reference
@@ -15,6 +17,16 @@ expression :
 	|expression op=('*'|'/') expression #MulDiv // precidence! to poio strong poio pano
 	|expression op=('+'|'-') expression  # AddSub     // match keyword hello followed by an identifier	
 	|ID '=' expression #assignment
+	;
+
+
+anonCall:
+	anonCreation '(' ( funCall | funCallInt | ID | INT ) (',' funCall | ',' funCallInt | ',' INT | ',' ID)* ')'
+	;
+
+
+anonCreation:	
+	'lambda' '(' ID (',' ID)* ')' ':' expression+ 'end' 
 	;
 	
 funCallInt: 
