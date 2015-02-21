@@ -7,9 +7,10 @@ program :
 
 expression : 
 	
-	'def' ID'(' ID ')' ':' expression 'end' #funCreation
-	|ID '(' ID ')' #funCall
-	|ID				# invocation
+	'def' ID'(' ID (',' ID)* ')' ':' expression 'end' #funCreation
+	|'print' '(' ID ')' #printStatement
+	|funCallFC #funCallFC1
+	|ID				# reference
 	|INT				 # int	
 	| '(' expression ')' #paren
 	|expression op=('*'|'/') expression #MulDiv // precidence! to poio strong poio pano
@@ -17,6 +18,17 @@ expression :
 	|ID '=' expression #assignment
 	;
 	
+funCallInt: 
+	ID '(' INT (',' INT)* ')'
+	;
+
+funCall:
+	ID '(' ID (',' ID)* ')'
+	;
+
+funCallFC:
+	ID '(' ( funCall | funCallInt | ID | INT ) (',' funCall | ',' funCallInt | ',' INT | ',' ID)* ')'
+	;
 
 ID : [a-z]+ ;
 INT : [0-9]+ ;             // match lower-case identifiers

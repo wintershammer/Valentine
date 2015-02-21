@@ -11,19 +11,24 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by the {@code invocation}
+	 * Visit a parse tree produced by the {@code funCallFC1}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInvocation(@NotNull MyGParser.InvocationContext ctx);
+	T visitFunCallFC1(@NotNull MyGParser.FunCallFC1Context ctx);
 	/**
-	 * Visit a parse tree produced by the {@code paren}
-	 * labeled alternative in {@link MyGParser#expression}.
+	 * Visit a parse tree produced by {@link MyGParser#funCallFC}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParen(@NotNull MyGParser.ParenContext ctx);
+	T visitFunCallFC(@NotNull MyGParser.FunCallFCContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#funCallInt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunCallInt(@NotNull MyGParser.FunCallIntContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code MulDiv}
 	 * labeled alternative in {@link MyGParser#expression}.
@@ -59,8 +64,7 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunCreation(@NotNull MyGParser.FunCreationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code funCall}
-	 * labeled alternative in {@link MyGParser#expression}.
+	 * Visit a parse tree produced by {@link MyGParser#funCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -72,4 +76,25 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitInt(@NotNull MyGParser.IntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code reference}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReference(@NotNull MyGParser.ReferenceContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code printStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code paren}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParen(@NotNull MyGParser.ParenContext ctx);
 }

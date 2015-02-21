@@ -56,4 +56,15 @@ public class Value {
 		return this.i;
 	}
 
+	public String printSelf() {
+		if(this.curType == ValType.DOUBLE){
+			return this.getDouble().toString();
+		}
+		if(this.curType == ValType.INTEGER){
+			return this.getInteger().toString();
+		}
+		
+		return "NOT APPLICABLE";
+	}
+
 }

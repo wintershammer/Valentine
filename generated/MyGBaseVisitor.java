@@ -17,14 +17,21 @@ public class MyGBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements My
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitInvocation(@NotNull MyGParser.InvocationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunCallFC1(@NotNull MyGParser.FunCallFC1Context ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParen(@NotNull MyGParser.ParenContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunCallFC(@NotNull MyGParser.FunCallFCContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFunCallInt(@NotNull MyGParser.FunCallIntContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -74,4 +81,25 @@ public class MyGBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements My
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitInt(@NotNull MyGParser.IntContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitReference(@NotNull MyGParser.ReferenceContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitParen(@NotNull MyGParser.ParenContext ctx) { return visitChildren(ctx); }
 }
