@@ -6,7 +6,7 @@ program :
 
 expression : 
 	
-	'def' ID'(' ID (',' ID)* ')' ':' expression 'end' #funCreation
+	'def' ID'(' ID (',' ID)* ')' ':' expression+ 'end' #funCreation
 	|'print' '(' ID ')' #printStatement
 	|funCallFC #funCallFC1
 	|ID				# reference

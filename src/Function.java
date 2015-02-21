@@ -7,13 +7,13 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Function {
 	ArrayList<String> params = new ArrayList<String>();
-	ParseTree body;
+	ArrayList<ParseTree> body = new ArrayList<ParseTree>();
 	Map<String, Value> enviroment = new HashMap<String, Value>();
 	
 	
-	public Function(ArrayList<String> params,ParseTree body,Map<String,Value> enviroment){
+	public Function(ArrayList<String> params,ArrayList<ParseTree> bodyNode,Map<String,Value> enviroment){
 		this.params.addAll(params);
-		this.body = body;
+		this.body = bodyNode;
 		this.enviroment = enviroment;
 	}
 
@@ -39,9 +39,11 @@ public class Function {
 		
 		evaluate.setEnviroment(newEnv);
 		
+		Value val = new Value();
 		
-		Value val = evaluate.visit(body);
-		
+		for(ParseTree child : body){
+			val = evaluate.visit(child);
+		}
 		
 		return val;
 		

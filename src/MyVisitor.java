@@ -102,9 +102,13 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		// TODO: ADD PARAMETERS DECLARED INSIDE FUNCTION BODY TO ITS ENVIROMENT
 
 		ParseTree idNode = ctx.ID(0);
-		ParseTree bodyNode = ctx.expression();
+		ArrayList<ParseTree> bodyNode = new ArrayList<ParseTree>();
 		String id = idNode.getText();
 		ArrayList<String> idParam = new ArrayList<String>();
+		
+		for(int i = 0; i < ctx.expression().size() ; i++){
+			bodyNode.add(ctx.expression(i));
+		}
 
 		for (int i = 1; i < ctx.ID().size(); i++) {
 			idParam.add(ctx.ID(i).getText());
