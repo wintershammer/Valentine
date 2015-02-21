@@ -197,6 +197,18 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 			}		
 		}
 		
+		for (int i = 0; i < ctx.anonCreation().size(); i++) {
+			Value wtfs = visit(ctx.anonCreation(i));
+			parameters.add(wtfs);
+		}
+
+		
+		
+		for (int i = 0; i < ctx.anonCall().size(); i++) {
+			Value wtfs = visit(ctx.anonCall(i));
+			parameters.add(wtfs);
+		}
+
 		for (int i = 0; i < ctx.funCall().size(); i++) {
 			Value wtfs = visit(ctx.funCall(i));
 			parameters.add(wtfs);

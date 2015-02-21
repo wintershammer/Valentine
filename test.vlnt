@@ -2,6 +2,12 @@ def f(x,y):
 	x + y
 end
 
+def evalexamp(x,y):
+	x * x
+	y + 100
+	z = x / y #assignments evaluate to the value of the assigned expression
+end
+
 def y(x):
 	x + 1
 end
@@ -10,22 +16,42 @@ def h(x):
 	x + x
 end
 
-def fc(g):
+def fc(g):  
+	#Example of a closure: The function fcadder can access g
 	def fcadder(a):
 		a + g
 	end
 end
 
-a = 1
-b = y(a)
+def ho(f):
+	f(5) # example of a high order function: returns its argument function applied to 5
+end
+
+
+
+def hoc(h,y,x):
+	# another example of a high order combinator
+	y( x (h ) )
+end
+
+a = hoc(10,lambda(x): x * x end ,lambda(x): x + x end)
+print(a)
+
+a = ho(y)
+print(a)
+
+
+a = f ( lambda (x): x + x end(5), 20)  #anonymous function calls can be used as arguments
+print(a)
+
+
+a = 1500
+b = 100
+b = evalexamp(a,b) #The returned value of a function is the value of the last evaluated expression in its body
 print(b)
 
 a = 2
-b = f(a,a)
-print(b)
-
-a = 2
-b = f(y(a),5)
+b = f(y(a),5) #function calls can be used as arguments
 print(b)
 
 a = 1
@@ -33,11 +59,11 @@ b = y
 c = b(a)
 print(c)
 
-a = fc(5)
+a = fc(5) #function return values can be bound to variables (in this case the returned fcadder func is bound to a)
 b = a(100)
 print(b) 
 
-a = (lambda (x): x + x end 
+a = (lambda (x): x + x end 		#anonymous functions can be bound to variables
 	(h(6)))
 
-print(a)
+print(a)  

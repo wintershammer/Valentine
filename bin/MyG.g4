@@ -38,9 +38,11 @@ funCall:
 	;
 
 funCallFC:
-	ID '(' ( funCall | funCallInt | ID | INT ) (',' funCall | ',' funCallInt | ',' INT | ',' ID)* ')'
+	ID '(' ( anonCreation | anonCall | funCall | funCallInt | ID | INT ) (','anonCreation | ',' anonCall | ',' funCall | ',' funCallInt | ',' INT | ',' ID)* ')'
 	;
 
+
+COMMENT:  '#' ~( '\r' | '\n' )* -> skip;
 ID : [a-z]+ ;
 INT : [0-9]+ ;             // match lower-case identifiers
 WS : [ \t\r\n]+ -> skip ; 
