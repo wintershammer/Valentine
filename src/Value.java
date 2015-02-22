@@ -1,13 +1,14 @@
 public class Value {
 
 	static enum ValType {
-		DOUBLE, BOOLEAN,INTEGER,FUNCTION
+		DOUBLE, BOOLEAN,INTEGER,FUNCTION, LIST
 	};
 
 	Double d;
 	Function f;
 	Boolean b;
 	Integer i;
+	List l;
 	ValType curType;
 
 	public Value() {
@@ -22,6 +23,11 @@ public class Value {
 	public Value(Function f){
 		this.f = f;
 		this.curType = ValType.FUNCTION;
+	}
+	
+	public Value(List l){
+		this.l = l;
+		this.curType = ValType.LIST;
 	}
 	
 	public Value(Integer i){
@@ -65,6 +71,14 @@ public class Value {
 		}
 		else if(this.curType == ValType.FUNCTION){
 			return this.getFunction().toString();
+		}
+		else if(this.curType == ValType.LIST){
+			System.out.print('(');
+			for(Value element : l.elements){
+				System.out.print(element.printSelf() + " ");
+			}
+			System.out.print(')' + " ");
+			return this.l.toString();
 		}
 		
 		return "NOT APPLICABLE";

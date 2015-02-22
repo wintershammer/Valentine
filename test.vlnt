@@ -27,14 +27,24 @@ def ho(f):
 	f(5) # example of a high order function: returns its argument function applied to 5
 end
 
+def tolist(a,b,c):
+	list (a,h(b),lambda(x): 100 * x end (c)) #you can return multiple values and of any type using a list
+end
 
-
-def hoc(h,y,x):
+def hoc(x,h,y):
 	# another example of a high order combinator
 	y( x (h ) )
 end
 
-a = hoc(10,lambda(x): x * x end ,lambda(x): x + x end)
+a = tolist(1,2,3)
+print(a)
+
+a = hoc(lambda(x): x * x end,10,lambda(x): x + x end)
+print(a)
+
+a = hoc(h,hoc(h,hoc(h,5,h),h),h) #you can get pretty complex stuff done with high-order combinators!
+# here the value returned is seventh element (each hoc applies the step h two times, so we get six elements past the first) 
+# in the geometric sequence for r = 2, a1 = 5 
 print(a)
 
 a = ho(y)
@@ -67,3 +77,7 @@ a = (lambda (x): x + x end 		#anonymous functions can be bound to variables
 	(h(6)))
 
 print(a)  
+
+
+
+

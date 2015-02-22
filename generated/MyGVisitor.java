@@ -18,6 +18,12 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunCallFC1(@NotNull MyGParser.FunCallFC1Context ctx);
 	/**
+	 * Visit a parse tree produced by {@link MyGParser#argument}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgument(@NotNull MyGParser.ArgumentContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MyGParser#funCallFC}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -50,6 +56,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssignment(@NotNull MyGParser.AssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code listCreation}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListCreation(@NotNull MyGParser.ListCreationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyGParser#program}.
 	 * @param ctx the parse tree

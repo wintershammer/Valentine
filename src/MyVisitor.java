@@ -178,46 +178,19 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	@Override
 	public Value visitFunCallFC(@NotNull MyGParser.FunCallFCContext ctx) {
 
-		String key = ctx.ID(0).getText();
+		String key = ctx.ID().getText();
 
 		Function function = null;
 
 		ArrayList<Value> parameters = new ArrayList<Value>();
-
-		for (int i = 0; i < ctx.INT().size(); i++) {
-			Value wtfs = new Value(Integer.valueOf(ctx.INT(i).getText()));
-			parameters.add(wtfs);
-		}
-		
-		for (int i = 1; i < ctx.ID().size(); i++) { // jump over index 0 of ID : its the called function's name
-			String id = ctx.ID(i).getText();
-			if (memory.containsKey(id)) {
-				Value wtfs = memory.get(id);
-				parameters.add(wtfs);
-			}		
-		}
-		
-		for (int i = 0; i < ctx.anonCreation().size(); i++) {
-			Value wtfs = visit(ctx.anonCreation(i));
-			parameters.add(wtfs);
-		}
-
 		
 		
-		for (int i = 0; i < ctx.anonCall().size(); i++) {
-			Value wtfs = visit(ctx.anonCall(i));
-			parameters.add(wtfs);
+		for(int i = 0; i < ctx.argument().size(); i++){
+			Value val = visit(ctx.argument(i));
+			parameters.add(val);
 		}
-
-		for (int i = 0; i < ctx.funCall().size(); i++) {
-			Value wtfs = visit(ctx.funCall(i));
-			parameters.add(wtfs);
-		}
-
-		for (int i = 0; i < ctx.funCallInt().size(); i++) {
-			Value wtfs = visit(ctx.funCallInt(i));
-			parameters.add(wtfs);
-		}
+		
+		
 
 		if (memory.containsKey(key)) {
 			function = memory.get(key).getFunction();
@@ -265,33 +238,80 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 		ArrayList<Value> parameters = new ArrayList<Value>();
 		
-		for (int i = 0; i < ctx.ID().size(); i++) {
-			String id = ctx.ID(i).getText();
-			if (memory.containsKey(id)) {
-				Value wtfs = memory.get(id);
-				parameters.add(wtfs);
-			}		
-		}
-
-		for (int i = 0; i < ctx.INT().size(); i++) {
-			Value wtfs = new Value(Integer.valueOf(ctx.INT(i).getText()));
-			parameters.add(wtfs);
-		}
-
 		
-		for (int i = 0; i < ctx.funCall().size(); i++) {
-			Value wtfs = visit(ctx.funCall(i));
-			parameters.add(wtfs);
+		for(int i = 0; i < ctx.argument().size(); i++){
+			Value val = visit(ctx.argument(i));
+			parameters.add(val);
 		}
-
-		for (int i = 0; i < ctx.funCallInt().size(); i++) {
-			Value wtfs = visit(ctx.funCallInt(i));
-			parameters.add(wtfs);
-		}
+		
+		
 		Value rValue = new Value();
 		
 		rValue = function.getFunction().invoke(parameters);
 
 		return rValue;
 	}
+	
+	
+	@Override
+	public Value visitListCreation(@NotNull MyGParser.ListCreationContext ctx) {
+		
+		ArrayList<Value> container = new ArrayList<Value>();
+		
+		
+		for(int i = 0; i < ctx.argument().size(); i++){
+			Value val = visit(ctx.argument(i));
+			container.add(val);
+		}
+			
+
+		List list = new List(container);
+		Value value = new Value(list);
+		
+		return value;
+	}
+	
+	@Override
+	public Value visitArgument(@NotNull MyGParser.ArgumentContext ctx) {
+		
+		Value value = new Value();
+		
+		if (ctx.ID() != null) {
+			String id = ctx.ID().getText();
+			if (memory.containsKey(id)) {
+				value = memory.get(id);
+			}
+		}
+	
+		else if (ctx.INT() != null){
+			value = new Value(Integer.valueOf(ctx.INT().getText()));
+		}
+		
+		else if(ctx.anonCall() != null){
+			value = visit(ctx.anonCall());
+		}
+		
+		else if(ctx.anonCreation() != null){
+			value = visit(ctx.anonCreation());
+		}
+		
+		else if(ctx.funCall() != null){
+			value = visit(ctx.funCall());
+		}
+		
+		else if(ctx.funCallInt() != null){
+			value = visit(ctx.funCallInt());
+		}	
+		
+		else if(ctx.funCallFC() != null){
+			value = visit(ctx.funCallFC());
+		}	
+		
+		else{
+			System.out.println("something went wrong at: " + ctx.getRuleIndex());
+		}
+
+		return value;
+	}
+	
 }

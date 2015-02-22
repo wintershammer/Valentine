@@ -11,6 +11,7 @@ expression :
 	|anonCreation #anonCreation1
 	|'print' '(' ID ')' #printStatement
 	|funCallFC #funCallFC1
+	|'list' '(' argument (',' argument)* ')' #listCreation
 	|ID				# reference
 	|INT				 # int	
 	| '(' expression ')' #paren
@@ -21,9 +22,12 @@ expression :
 
 
 anonCall:
-	anonCreation '(' ( funCall | funCallInt | ID | INT ) (',' funCall | ',' funCallInt | ',' INT | ',' ID)* ')'
+	anonCreation '(' argument (',' argument)* ')'
 	;
 
+argument:
+	funCallFC | anonCreation | anonCall | funCall | funCallInt | ID | INT
+	;
 
 anonCreation:	
 	'lambda' '(' ID (',' ID)* ')' ':' expression+ 'end' 
@@ -38,7 +42,7 @@ funCall:
 	;
 
 funCallFC:
-	ID '(' ( anonCreation | anonCall | funCall | funCallInt | ID | INT ) (','anonCreation | ',' anonCall | ',' funCall | ',' funCallInt | ',' INT | ',' ID)* ')'
+	ID '(' argument (',' argument)* ')'
 	;
 
 
