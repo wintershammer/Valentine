@@ -1,0 +1,16 @@
+def fibo(x):
+	a = (x == 1) or (x == 0)
+	c = 0
+	if a:
+		c = x
+	end
+	else:
+	 	l = x - 1
+	 	r = x - 2
+		c = fibo(l) + fibo(r)
+	end
+	c
+end
+
+b = fibo(10)
+print(b)

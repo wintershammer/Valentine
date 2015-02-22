@@ -137,6 +137,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAlternative(@NotNull MyGParser.AlternativeContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code boolCheck}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolCheck(@NotNull MyGParser.BoolCheckContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ifStatement}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
@@ -156,6 +163,12 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitInt(@NotNull MyGParser.IntContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#relOper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelOper(@NotNull MyGParser.RelOperContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code printStatement}
 	 * labeled alternative in {@link MyGParser#expression}.

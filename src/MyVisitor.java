@@ -122,6 +122,33 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 		return value;
 	}
+
+	
+	@Override
+	public Value visitBoolCheck(@NotNull MyGParser.BoolCheckContext ctx) {
+		
+		Value left = new Value();
+		Value right = new Value();
+		Value rValue = new Value();
+		
+		left = visit(ctx.expression(0));
+		right = visit(ctx.expression(1));
+		
+		switch(ctx.boolOper().getText()){
+		case "and":
+			rValue = new Value(left.getBoolean() && right.getBoolean());
+			break;
+		case "or":
+			rValue = new Value(left.getBoolean() || right.getBoolean());
+		}
+
+		
+		return rValue;
+	}
+		
+	
+	
+	
 	
 	@Override
 	public Value visitBoolExpress(@NotNull MyGParser.BoolExpressContext ctx) {
@@ -131,7 +158,7 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		Value right = visit(ctx.expression(1));
 
 		Value value = new Value();
-		switch (ctx.boolOper().getText()) {
+		switch (ctx.relOper().getText()) {
 		case ">":
 			if (left.getInteger() > right.getInteger()) //should add a getType method on Value to compare more than integers
 				value = new Value(true);

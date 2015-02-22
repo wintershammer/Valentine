@@ -150,6 +150,13 @@ public class MyGBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements My
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitBoolCheck(@NotNull MyGParser.BoolCheckContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitIfStatement(@NotNull MyGParser.IfStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -165,6 +172,13 @@ public class MyGBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements My
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitInt(@NotNull MyGParser.IntContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitRelOper(@NotNull MyGParser.RelOperContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

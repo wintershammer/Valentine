@@ -13,11 +13,12 @@ expression :
 	|funCallFC #funCallFC1
 	|'list' '(' argument (',' argument)* ')' #listCreation
 	|'print' '(' ID ')' #printStatement
+	|expression boolOper expression #boolCheck
 	|ID				# reference
 	|INT				 # int	
 	|BOOLEAN 			 #bool
 	| '(' expression ')' #paren
-	|expression boolOper expression #boolExpress
+	|expression relOper expression #boolExpress
 	|expression op=('*'|'/') expression #MulDiv // precidence! to poio strong poio pano
 	|expression op=('+'|'-') expression  # AddSub     // match keyword hello followed by an identifier	
 	|ID '=' expression #assignment
@@ -31,12 +32,14 @@ consequent:
 alternative:
 	expression+
 	;
-
+boolOper:
+	'and' | 'or'
+	;
 boolExpress1:
-	expression boolOper expression
+	expression relOper expression
 	;
 
-boolOper:
+relOper:
 	('>' | '<' | '>=' | '<=' | '==' | '!=')
 	;
 
