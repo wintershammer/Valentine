@@ -47,6 +47,13 @@ public class Value {
 		return this.d;
 	}
 	
+	public Boolean getBoolean(){
+		if(this.curType != ValType.BOOLEAN){
+			System.out.println("NOT A BOOLEAN");
+		}
+		return this.b;
+	}
+	
 	public Function getFunction(){
 		if (this.curType != ValType.FUNCTION){
 			System.out.println("NOT A FUNCTION ");
@@ -69,16 +76,23 @@ public class Value {
 		else if(this.curType == ValType.INTEGER){
 			return this.getInteger().toString();
 		}
+		else if(this.curType == ValType.BOOLEAN){
+			return this.getBoolean().toString();
+		}
+		else if(this.curType == ValType.FUNCTION){
+			return this.getFunction().toString();
+		}
 		else if(this.curType == ValType.FUNCTION){
 			return this.getFunction().toString();
 		}
 		else if(this.curType == ValType.LIST){
-			System.out.print('(');
+			StringBuilder builder = new StringBuilder();
+			builder.append('(');
 			for(Value element : l.elements){
-				System.out.print(element.printSelf() + " ");
+				builder.append(element.printSelf() + ",");
 			}
-			System.out.print(')' + " ");
-			return this.l.toString();
+			builder.replace(builder.length()-1, builder.length(), ")"); //replace the last coma with a closing paren
+			return builder.toString();
 		}
 		
 		return "NOT APPLICABLE";

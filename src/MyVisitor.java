@@ -40,6 +40,12 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	}
 
 	@Override
+	public Value visitBool(MyGParser.BoolContext ctx) {
+		return new Value(Boolean.valueOf(ctx.BOOLEAN().getText()));
+	}	
+	
+	
+	@Override
 	public Value visitAssignment(MyGParser.AssignmentContext ctx) {
 		String id = ctx.ID().getText();
 		Value value = visit(ctx.expression());
@@ -85,6 +91,93 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		return value;
 	}
 
+	@Override
+	public Value visitIfStatement(@NotNull MyGParser.IfStatementContext ctx) {
+		
+		
+		Value condition = new Value();
+		Value value = new Value();
+		
+		if(ctx.ID() != null){
+			String id = ctx.ID().getText();
+			if (memory.containsKey(id)) {
+				condition = memory.get(id);
+			}
+		}
+		
+		
+
+		//System.out.println(condition.getBoolean());
+		
+		if(condition.getBoolean() != null){
+			if(condition.getBoolean()){
+				value = visit(ctx.consequent());
+			}
+			else{
+				if(ctx.alternative() != null)
+					value = visit(ctx.alternative());
+			}
+			
+		}
+
+		return value;
+	}
+	
+	@Override
+	public Value visitBoolExpress(@NotNull MyGParser.BoolExpressContext ctx) {
+		
+		Value left = visit(ctx.expression(0));
+
+		Value right = visit(ctx.expression(1));
+
+		Value value = new Value();
+		switch (ctx.boolOper().getText()) {
+		case ">":
+			if (left.getInteger() > right.getInteger()) //should add a getType method on Value to compare more than integers
+				value = new Value(true);
+			else
+				value = new Value(false);
+			break;
+		case "<":
+			if (left.getInteger() < right.getInteger())
+				value = new Value(true);
+			else
+				value = new Value(false);
+		case "<=":
+			if (left.getInteger() <= right.getInteger())
+				value = new Value(true);
+			else
+				value = new Value(false);
+			break;
+			
+			
+		case ">=":
+			if (left.getInteger() >= right.getInteger())
+				value = new Value(true);
+			else
+				value = new Value(false);
+			break;	
+			
+		case "==":
+			if (left.getInteger() == right.getInteger())
+				value = new Value(true);
+			else
+				value = new Value(false);
+			break;
+			
+		case "!=":
+			if (left.getInteger() != right.getInteger())
+				value = new Value(true);
+			else
+				value = new Value(false);
+			break;
+		}
+
+		return value;
+		
+	}
+	
+	
 	public Value visitPrintStatement(
 			@NotNull MyGParser.PrintStatementContext ctx) {
 

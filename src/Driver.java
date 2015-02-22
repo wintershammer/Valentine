@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -8,8 +9,8 @@ public class Driver {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-
-		MyGLexer lexer = new MyGLexer(new ANTLRFileStream("test.vlnt"));
+		
+		MyGLexer lexer = new MyGLexer(new ANTLRFileStream(args[0]));
 		MyGParser parser = new MyGParser(new CommonTokenStream(lexer));
 		ParseTree tree = parser.program();
 		MyVisitor visitor = new MyVisitor();

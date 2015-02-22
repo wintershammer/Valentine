@@ -1,0 +1,31 @@
+def btrue(lx,ly,x,y):
+	lx(ly(x))
+end
+
+def bfalse(lx,ly,x,y):
+	lx(ly(y))
+end
+
+def bif(b,t,f):
+	b(l,l,t,f)
+end
+
+def l(x):
+	x
+end
+
+def consequent(x): 
+	x + 1
+end
+
+def alternative(x):
+	x - 1
+end
+
+a = btrue(l,l,1,0)
+b = bfalse(l,l,1,0)
+truetest = bif(btrue,consequent(1),alternative(1)) 
+falsetest = bif(bfalse,consequent(1),alternative(1))
+
+print(truetest)
+print(falsetest)

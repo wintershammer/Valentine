@@ -30,6 +30,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunCallFC(@NotNull MyGParser.FunCallFCContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code bool}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBool(@NotNull MyGParser.BoolContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MyGParser#funCallInt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -42,6 +49,73 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMulDiv(@NotNull MyGParser.MulDivContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code listCreation}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListCreation(@NotNull MyGParser.ListCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code funCreation}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunCreation(@NotNull MyGParser.FunCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code reference}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReference(@NotNull MyGParser.ReferenceContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#boolOper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolOper(@NotNull MyGParser.BoolOperContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code paren}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParen(@NotNull MyGParser.ParenContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code plain}
+	 * labeled alternative in {@link MyGParser#program}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPlain(@NotNull MyGParser.PlainContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code anonCreation1}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCreation1(@NotNull MyGParser.AnonCreation1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#boolExpress1}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExpress1(@NotNull MyGParser.BoolExpress1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#anonCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCall(@NotNull MyGParser.AnonCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolExpress}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExpress(@NotNull MyGParser.BoolExpressContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code AddSub}
 	 * labeled alternative in {@link MyGParser#expression}.
@@ -57,25 +131,18 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(@NotNull MyGParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code listCreation}
+	 * Visit a parse tree produced by {@link MyGParser#alternative}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlternative(@NotNull MyGParser.AlternativeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ifStatement}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitListCreation(@NotNull MyGParser.ListCreationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#program}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitProgram(@NotNull MyGParser.ProgramContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code funCreation}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunCreation(@NotNull MyGParser.FunCreationContext ctx);
+	T visitIfStatement(@NotNull MyGParser.IfStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyGParser#funCall}.
 	 * @param ctx the parse tree
@@ -89,13 +156,6 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitInt(@NotNull MyGParser.IntContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code reference}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReference(@NotNull MyGParser.ReferenceContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code printStatement}
 	 * labeled alternative in {@link MyGParser#expression}.
@@ -111,29 +171,15 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnonCall1(@NotNull MyGParser.AnonCall1Context ctx);
 	/**
-	 * Visit a parse tree produced by the {@code paren}
-	 * labeled alternative in {@link MyGParser#expression}.
+	 * Visit a parse tree produced by {@link MyGParser#consequent}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParen(@NotNull MyGParser.ParenContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code anonCreation1}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnonCreation1(@NotNull MyGParser.AnonCreation1Context ctx);
+	T visitConsequent(@NotNull MyGParser.ConsequentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyGParser#anonCreation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAnonCreation(@NotNull MyGParser.AnonCreationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#anonCall}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnonCall(@NotNull MyGParser.AnonCallContext ctx);
 }
