@@ -95,29 +95,45 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	public Value visitIfStatement(@NotNull MyGParser.IfStatementContext ctx) {
 		
 		
-		Value condition = new Value();
+		ArrayList<Value> extraConditions = new ArrayList<Value>();
 		Value value = new Value();
+		Boolean result = null; //this initialisation could be a problem.
 		
-		if(ctx.ID() != null){
-			String id = ctx.ID().getText();
-			if (memory.containsKey(id)) {
-				condition = memory.get(id);
+		
+		if(ctx.expression(0) != null){  // or the first conditional expression to the result if it exists
+			result = visit(ctx.expression(0)).getBoolean();
+		}
+		
+		for (int i = 1; i < ctx.expression().size(); i++) { // now add all the subsequent conditions if they exist
+			if (ctx.expression(i) != null) {
+				extraConditions.add(visit(ctx.expression(0)));
 			}
 		}
 		
 		
-
+		for (int i = 0; i < extraConditions.size(); i++){ //and check them against the previous ones using the operator
+			if (ctx.boolOper(i) != null) {
+				switch (ctx.boolOper(i).getText()) {
+				case "and":
+					result = result & extraConditions.get(i).getBoolean();
+					break;
+				case "or":
+					result = result | extraConditions.get(i).getBoolean();
+					break;
+				}
+			}
+		}
+		
+		
 		//System.out.println(condition.getBoolean());
 		
-		if(condition.getBoolean() != null){
-			if(condition.getBoolean()){
+		if (result != null) {
+			if (result) {
 				value = visit(ctx.consequent());
-			}
-			else{
-				if(ctx.alternative() != null)
+			} else {
+				if (ctx.alternative() != null)
 					value = visit(ctx.alternative());
 			}
-			
 		}
 
 		return value;
@@ -146,7 +162,6 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		return rValue;
 	}
 		
-	
 	
 	
 	

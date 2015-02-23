@@ -98,12 +98,6 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnonCreation1(@NotNull MyGParser.AnonCreation1Context ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyGParser#boolExpress1}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolExpress1(@NotNull MyGParser.BoolExpress1Context ctx);
-	/**
 	 * Visit a parse tree produced by {@link MyGParser#anonCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

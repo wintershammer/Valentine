@@ -5,23 +5,23 @@ program :
 		;
 
 expression : 
-	
-	'def' ID'(' ID (',' ID)* ')' ':' expression+ 'end' #funCreation
-	|'if' ID ':' consequent 'end' ('else' ':' alternative 'end')? #ifStatement
+	'(' expression ')' #paren
+	|'def' ID'(' ID (',' ID)* ')' ':' expression+ 'end' #funCreation
+	|'if' expression (boolOper expression)* ':' consequent 'end' ('else' ':' alternative 'end')? #ifStatement
 	|anonCall #anonCall1
 	|anonCreation #anonCreation1
 	|funCallFC #funCallFC1
 	|'list' '(' argument (',' argument)* ')' #listCreation
 	|'print' '(' ID ')' #printStatement
-	|expression boolOper expression #boolCheck
-	|ID				# reference
-	|INT				 # int	
-	|BOOLEAN 			 #bool
-	| '(' expression ')' #paren
 	|expression relOper expression #boolExpress
+	|expression boolOper expression #boolCheck
 	|expression op=('*'|'/') expression #MulDiv // precidence! to poio strong poio pano
 	|expression op=('+'|'-') expression  # AddSub     // match keyword hello followed by an identifier	
 	|ID '=' expression #assignment
+	|ID				# reference
+	|INT				 # int	
+	|BOOLEAN 			 #bool
+
 	;
 
 
@@ -32,12 +32,12 @@ consequent:
 alternative:
 	expression+
 	;
+
+
 boolOper:
 	'and' | 'or'
 	;
-boolExpress1:
-	expression relOper expression
-	;
+	
 
 relOper:
 	('>' | '<' | '>=' | '<=' | '==' | '!=')
