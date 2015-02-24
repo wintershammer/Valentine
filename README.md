@@ -13,7 +13,7 @@ Currently supports:
 - Print statement
 
 
-- Lists,integers,boolean values
+- Lists, integers, boolean values
 
 
 - First class functions (with closures) : Functions can be assigned to variables, be returned by other functions and be used as arguments.The value of the last expression is returned as the value of the function (like in Lisps)
