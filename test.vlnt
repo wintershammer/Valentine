@@ -18,6 +18,7 @@ end
 
 def fc(g):  
 	#Example of a closure: The function fcadder can access g
+	#Also an example of a curried function
 	def fcadder(a):
 		a + g
 	end
