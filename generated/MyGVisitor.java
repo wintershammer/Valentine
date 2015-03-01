@@ -37,6 +37,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBool(@NotNull MyGParser.BoolContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code string}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(@NotNull MyGParser.StringContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MyGParser#funCallInt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -57,12 +64,25 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitListCreation(@NotNull MyGParser.ListCreationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code funCreation}
+	 * Visit a parse tree produced by the {@code funCreation1}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
+	T visitFunCreation1(@NotNull MyGParser.FunCreation1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#funCreation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
 	T visitFunCreation(@NotNull MyGParser.FunCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code head}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHead(@NotNull MyGParser.HeadContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code reference}
 	 * labeled alternative in {@link MyGParser#expression}.
@@ -104,6 +124,20 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAnonCall(@NotNull MyGParser.AnonCallContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code nullCheck}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNullCheck(@NotNull MyGParser.NullCheckContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code delayStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDelayStatement(@NotNull MyGParser.DelayStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code boolExpress}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
@@ -124,6 +158,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssignment(@NotNull MyGParser.AssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code tail}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTail(@NotNull MyGParser.TailContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyGParser#alternative}.
 	 * @param ctx the parse tree

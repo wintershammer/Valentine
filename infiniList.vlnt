@@ -1,0 +1,29 @@
+
+
+def force(promise):
+	promise()
+end
+
+def tail(stream):
+	s = first(rest(stream))
+
+	ss = force(s)
+end
+
+def streamsect(n,stream):
+	if( n == 0):
+		list(0)
+	end
+	else:
+		next = n-1
+		tailer = tail(stream)
+		part = list(first(stream), streamsect(next,tailer))
+	end
+end
+
+
+a = list(3,delay(a))
+
+newer = streamsect(2,a)
+
+print(newer)

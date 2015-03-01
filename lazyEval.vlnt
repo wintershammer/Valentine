@@ -1,0 +1,18 @@
+def force(promise):
+	promise()
+end
+
+
+argo = delay(a + 50)
+
+a = 300
+b = force(argo)
+
+
+print(b)
+
+
+
+#(define eval-aplus50 (delay (+ a 50)))
+#(let ((a 8))
+#  (force eval-aplus50))

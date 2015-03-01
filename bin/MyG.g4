@@ -6,13 +6,17 @@ program :
 
 expression : 
 	'(' expression ')' #paren
-	|'def' ID'(' ID (',' ID)* ')' ':' expression+ 'end' #funCreation
+	|funCreation #funCreation1
 	|'if' expression (boolOper expression)* ':' consequent 'end' ('else' ':' alternative 'end')? #ifStatement
 	|anonCall #anonCall1
 	|anonCreation #anonCreation1
 	|funCallFC #funCallFC1
-	|'list' '(' argument (',' argument)* ')' #listCreation
-	|'print' '(' ID ')' #printStatement
+	|'delay' '(' expression+ ')' #delayStatement
+	|'list' '(' expression (',' expression)* ')' #listCreation
+	|'first' '(' expression ')' #head
+	|'rest' '(' expression ')' #tail
+	|'print' '(' expression ')' #printStatement
+	|'null?' '(' expression ')' #nullCheck
 	|expression relOper expression #boolExpress
 	|expression boolOper expression #boolCheck
 	|expression op=('*'|'/') expression #MulDiv // precidence! to poio strong poio pano
@@ -21,6 +25,7 @@ expression :
 	|ID				# reference
 	|INT				 # int	
 	|BOOLEAN 			 #bool
+	|'"' ~('\r' | '\n' | '"')* '"' #string // ~ is negation : everything but \r \n or "
 
 	;
 
@@ -44,7 +49,9 @@ relOper:
 	;
 
 anonCall:
-	anonCreation '(' argument (',' argument)* ')'
+	anonCreation '(' (argument (',' argument)* ) * ')' 
+	// ( argument (',' argument)* )* : optional(one argument, optional (more args seperated by commas)) 
+	// arguments are of course optional because a function has the option to take no arguments
 	;
 
 argument:
@@ -52,7 +59,7 @@ argument:
 	;
 
 anonCreation:	
-	'lambda' '(' ID (',' ID)* ')' ':' expression+ 'end' 
+	'lambda' '(' (ID (',' ID)*)* ')' ':' expression+ 'end' 
 	;
 	
 funCallInt: 
@@ -60,13 +67,16 @@ funCallInt:
 	;
 
 funCall:
-	ID '(' ID (',' ID)* ')'
+	ID '(' (ID (',' ID)* )* ')'
 	;
 
 funCallFC:
-	ID '(' argument (',' argument)* ')'
+	ID '(' ( argument (',' argument)* )*  ')'
 	;
 
+funCreation:
+	'def' ID'(' ( ID (',' ID)* )* ')' ':' expression+ 'end' //again : one or more arguments are optional.
+	;
 
 COMMENT:  '#' ~( '\r' | '\n' )* -> skip;
 BOOLEAN: ('true' | 'false');

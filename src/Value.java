@@ -1,7 +1,7 @@
 public class Value {
 
 	static enum ValType {
-		DOUBLE, BOOLEAN,INTEGER,FUNCTION, LIST
+		DOUBLE, BOOLEAN,INTEGER,FUNCTION, LIST,STRING, NULL
 	};
 
 	Double d;
@@ -9,12 +9,19 @@ public class Value {
 	Boolean b;
 	Integer i;
 	List l;
+	String s;
 	ValType curType;
 
 	public Value() {
-		this(0.0);
+		this.curType = ValType.NULL;
 	}
 
+	
+	public Value(String s){
+		this.s = s;
+		this.curType = ValType.STRING;
+	}
+	
 	public Value(Double d) {
 		this.d = d;
 		this.curType = ValType.DOUBLE;
@@ -26,8 +33,13 @@ public class Value {
 	}
 	
 	public Value(List l){
-		this.l = l;
-		this.curType = ValType.LIST;
+		if (l.elements.isEmpty()){
+			this.curType = ValType.NULL;
+		}
+		else{
+			this.l = l;
+			this.curType = ValType.LIST;
+		}
 	}
 	
 	public Value(Integer i){
@@ -64,9 +76,20 @@ public class Value {
 	
 	public Integer getInteger() {
 		if(this.curType != ValType.INTEGER){
-			System.out.println("NOT A INTEGER");
+			System.out.println("NOT AN INTEGER");
 		}
 		return this.i;
+	}
+	
+	public List getList() {
+		if(this.curType != ValType.LIST){
+			System.out.println("NOT A LIST");
+		}
+		return this.l;
+	}
+	
+	public String getType(){
+		return this.curType.toString();
 	}
 
 	public String printSelf() {
@@ -87,12 +110,24 @@ public class Value {
 		}
 		else if(this.curType == ValType.LIST){
 			StringBuilder builder = new StringBuilder();
-			builder.append('(');
-			for(Value element : l.elements){
-				builder.append(element.printSelf() + ",");
+			if(l.elements.size() > 0){
+				builder.append('(');
+				for(Value element : l.elements){
+					builder.append(element.printSelf());
+					builder.append(",");
+				}
+				builder.replace(builder.length()-1, builder.length(), ")"); //replace the last coma with a closing paren
 			}
-			builder.replace(builder.length()-1, builder.length(), ")"); //replace the last coma with a closing paren
+			else{
+				builder.append("null");
+			}
 			return builder.toString();
+		}
+		else if(this.curType == ValType.STRING){
+			return this.s;
+		}
+		else if(this.curType == ValType.NULL){
+			return null;
 		}
 		
 		return "NOT APPLICABLE";

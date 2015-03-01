@@ -91,6 +91,59 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		return value;
 	}
 
+	
+	
+	@Override
+	public Value visitDelayStatement(@NotNull MyGParser.DelayStatementContext ctx) {
+		
+		ArrayList<ParseTree> bodyNode = new ArrayList<ParseTree>();
+		ArrayList<String> idParam = new ArrayList<String>();
+		
+		for(int i = 0; i < ctx.expression().size() ; i++){
+			bodyNode.add(ctx.expression(i));
+		}
+
+		Function function = new Function(idParam, bodyNode, this.memory);
+		Value value = new Value(function);
+		
+		return value;
+		
+	}
+
+	
+	@Override
+	public Value visitHead(@NotNull MyGParser.HeadContext ctx) {
+
+		List list = null;
+		Value rValue;
+		
+		if(ctx.expression() != null){  // or the first conditional expression to the result if it exists
+			list = visit(ctx.expression()).getList();
+		}
+		
+		rValue = list.first();
+		
+		return rValue;
+		
+	}
+
+	@Override
+	public Value visitTail(@NotNull MyGParser.TailContext ctx) {
+		List list = null;
+		Value rValue;
+		
+		if(ctx.expression() != null){  // or the first conditional expression to the result if it exists
+			list = visit(ctx.expression()).getList();
+		}
+		
+		List restList = new List(list.rest());
+		
+		rValue = new Value(restList);
+		
+		return rValue;
+		
+	}
+	
 	@Override
 	public Value visitIfStatement(@NotNull MyGParser.IfStatementContext ctx) {
 		
@@ -171,11 +224,14 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		Value left = visit(ctx.expression(0));
 
 		Value right = visit(ctx.expression(1));
+		
+		String typeLeft = left.getType();
+		String typeRight = right.getType();
 
 		Value value = new Value();
-		switch (ctx.relOper().getText()) {
-		case ">":
-			if (left.getInteger() > right.getInteger()) //should add a getType method on Value to compare more than integers
+			switch (ctx.relOper().getText()) {
+			case ">":
+			if (left.getInteger() > right.getInteger()) // should add a getType method on Value to compare more than integers
 				value = new Value(true);
 			else
 				value = new Value(false);
@@ -191,22 +247,21 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 			else
 				value = new Value(false);
 			break;
-			
-			
+
 		case ">=":
 			if (left.getInteger() >= right.getInteger())
 				value = new Value(true);
 			else
 				value = new Value(false);
-			break;	
-			
+			break;
+
 		case "==":
 			if (left.getInteger() == right.getInteger())
 				value = new Value(true);
 			else
 				value = new Value(false);
 			break;
-			
+
 		case "!=":
 			if (left.getInteger() != right.getInteger())
 				value = new Value(true);
@@ -214,21 +269,37 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 				value = new Value(false);
 			break;
 		}
-
+		
 		return value;
 		
 	}
 	
-	
-	public Value visitPrintStatement(
-			@NotNull MyGParser.PrintStatementContext ctx) {
+	@Override
+	public Value visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx) {
 
-		String id = ctx.ID().getText();
-		if (memory.containsKey(id)) {
-			Value value = memory.get(id);
-			System.out.println(value.printSelf());
-		}
+		Value printValue;
+		
+		printValue = visit(ctx.expression());
+		
+		System.out.println(printValue.printSelf());
 		return null;
+	}
+	
+	@Override
+	public Value visitNullCheck(@NotNull MyGParser.NullCheckContext ctx) {
+		
+		String s = visit(ctx.expression()).getType();
+
+		Boolean result = false;
+		
+		if(s == "NULL"){
+			result = true;
+		}
+		
+		Value rV = new Value(result);
+		
+		return rV;
+		
 	}
 
 	@Override
@@ -394,8 +465,8 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		ArrayList<Value> container = new ArrayList<Value>();
 		
 		
-		for(int i = 0; i < ctx.argument().size(); i++){
-			Value val = visit(ctx.argument(i));
+		for(int i = 0; i < ctx.expression().size(); i++){
+			Value val = visit(ctx.expression(i));
 			container.add(val);
 		}
 			
