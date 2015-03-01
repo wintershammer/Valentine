@@ -19,11 +19,9 @@ Currently supports:
 - First class functions (with closures) : Functions can be assigned to variables, be returned by other functions and be used as arguments.The value of the last expression is returned as the value of the function (like in Lisps)
 - Anonymous Functions: Anonymous function calls and definitions can be used as function arguments and/or be bound to variables
 
+- Lazy evaluation using delay thunks: Potentially infinite lists can be created this way (though this limited by the maximum recursion depth / stack size of the JVM)
 
-
-
-Check test.vlnt for a sample program
-
+Check the *.vlnt files for sample programs
 
 Quick tutorial of the syntax/features:
 -
