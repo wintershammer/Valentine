@@ -24,4 +24,11 @@ public class List {
 		return toReturn;
 	}
 	
+	public List append (List appendTo,Value element){
+		
+		this.elements.add(element);
+		return appendTo;
+		
+	}
+	
 }

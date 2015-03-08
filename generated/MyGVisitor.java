@@ -166,6 +166,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTail(@NotNull MyGParser.TailContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code loadStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLoadStatement(@NotNull MyGParser.LoadStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MyGParser#alternative}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -230,4 +237,11 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAnonCreation(@NotNull MyGParser.AnonCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code append}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAppend(@NotNull MyGParser.AppendContext ctx);
 }

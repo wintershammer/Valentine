@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-public class MyVisitor extends MyGBaseVisitor<Value> {
+public class LibVisitor extends MyGBaseVisitor<Value> {
 
 	Map<String, Value> memory = new HashMap<String, Value>();
 
@@ -17,6 +17,7 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		this.memory = newEnv;
 	}
 
+	
 	@Override
 	public Value visitAddSub(@NotNull MyGParser.AddSubContext ctx) {
 
@@ -152,25 +153,6 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		
 	}
 	
-	
-	@Override
-	public Value visitAppend(@NotNull MyGParser.AppendContext ctx) {
-		List appendTo = null;
-		
-		appendTo = visit(ctx.expression(0)).getList();
-		for(int i = 1; i < ctx.expression().size(); i++){
-			Value element = visit(ctx.expression(i));
-			appendTo.append(appendTo, element);
-		}
-		
-		Value rValue = new Value(appendTo);
-		
-		return rValue;
-		
-	}
-	
-	
-	
 	@Override
 	public Value visitIfStatement(@NotNull MyGParser.IfStatementContext ctx) {
 		
@@ -301,16 +283,6 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		
 	}
 	
-	@Override
-	public Value visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx) {
-
-		Value printValue;
-		
-		printValue = visit(ctx.expression());
-		
-		System.out.println(printValue.printSelf());
-		return null;
-	}
 	
 	@Override
 	public Value visitNullCheck(@NotNull MyGParser.NullCheckContext ctx) {
@@ -545,37 +517,6 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		}
 
 		return value;
-	}
-	
-
-	@Override
-	public Value visitLoadStatement(@NotNull MyGParser.LoadStatementContext ctx) {
-		String filename = ctx.FILENAME().toString().substring(2, ctx.FILENAME().toString().length()-2);
-		MyGLexer lexer;
-		try {
-			lexer = new MyGLexer(new ANTLRFileStream(filename));
-			MyGParser parser = new MyGParser(new CommonTokenStream(lexer));
-			ParseTree tree = parser.program();
-			LibVisitor visitor = new LibVisitor();
-			visitor.visit(tree);
-			Map tempMem = this.memory;
-			if(ctx.ID(0).getText() == "*"){ // if its the kleene star just add copy the visitor's memory
-				tempMem = visitor.memory;
-			}
-			else{
-				for (int i = 0; i < ctx.ID().size(); i++) {  //else just add the values that map to the IDs you passed as arguments in load
-					if (visitor.memory.containsKey(ctx.ID(i).getText())) {
-						tempMem.put(ctx.ID(i).getText(),
-								visitor.memory.get(ctx.ID(i).getText()));
-					}
-				}
-			}
-			this.memory = tempMem;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return new Value();
 	}
 	
 	

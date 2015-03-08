@@ -14,9 +14,11 @@ expression :
 	|'delay' '(' expression+ ')' #delayStatement
 	|'list' '(' expression (',' expression)* ')' #listCreation
 	|'first' '(' expression ')' #head
+	|'append' '(' expression (',' expression)* ')' #append //first ID is the list to append to
 	|'rest' '(' expression ')' #tail
 	|'print' '(' expression ')' #printStatement
 	|'null?' '(' expression ')' #nullCheck
+	|'load' FILENAME (ID (',' ID)*) #loadStatement
 	|expression relOper expression #boolExpress
 	|expression boolOper expression #boolCheck
 	|expression op=('*'|'/') expression #MulDiv // precidence! to poio strong poio pano
@@ -79,8 +81,9 @@ funCreation:
 	;
 
 COMMENT:  '#' ~( '\r' | '\n' )* -> skip;
+FILENAME:  '::' ~( '\r' | '\n')* '::';
 BOOLEAN: ('true' | 'false');
-ID : [a-z]+ ;
+ID : ([a-z] | [A-Z])+ ;
 INT : [0-9]+ ;             // match lower-case identifiers
 WS : [ \t\r\n]+ -> skip ; 
 NEWLINE:'\r'? '\n' ;

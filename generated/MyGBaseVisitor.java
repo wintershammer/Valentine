@@ -178,6 +178,13 @@ public class MyGBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements My
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitLoadStatement(@NotNull MyGParser.LoadStatementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitAlternative(@NotNull MyGParser.AlternativeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -242,4 +249,11 @@ public class MyGBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements My
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitAnonCreation(@NotNull MyGParser.AnonCreationContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAppend(@NotNull MyGParser.AppendContext ctx) { return visitChildren(ctx); }
 }
