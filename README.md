@@ -64,3 +64,25 @@ lambda (func,x): func(x) end (f,100) # anonymous function call and a high order 
 a = 10
 b = list(5,a,lambda(x): 3 * x end(5)) 
 ```
+
+```
+#Useful list operations: 
+#Result argument is the list to append the results to (can be an empty list: list() )
+map(function,list, result)
+length(list)
+filter(predicate,list,result)
+contains(list,key)
+
+#FOLDS:
+#The function argument must be a binary function
+#initValue is usually the identity value of the function: 0 for add/sub, 1 for mul/div , true for and , false for or
+reduceR(function,list,initialValue) 
+reduceL(function,list,initialValue)
+
+```
+A handy visualisation of right and left folds respectively:
+
+![Image of right fold](http://upload.wikimedia.org/wikipedia/commons/3/3e/Right-fold-transformation.png)
+
+![Image of left fold](http://upload.wikimedia.org/wikipedia/commons/5/5a/Left-fold-transformation.png)
+
