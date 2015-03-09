@@ -1,0 +1,19 @@
+load ::listLib.vlnt:: map,length,filter,contains,reduceR,reduceL
+
+a = list(1,2,3)
+bl = list(true,true,false)
+
+print(map(lambda(x): x * x end,a,list()))
+print(length(a))
+
+print(filter(lambda(x): x < 5 end, a , list()))
+
+print(contains(a,6))
+
+
+print(reduceR(lambda(x,y): x - y end,a,0)) # Right fold: (1 - (2- (3 - 0) ) , identity element for subtraction is 0
+print(reduceL(lambda(x,y): x - y end,a,0)) # Left fold : ((0 - 1) - 2 ) - 3 ) , identity element for subtraction is 0 
+
+print(reduceR(lambda (x,y): x and y end,bl,true)) #right fold, id element of boolean and is true
+
+print(reduceR(lambda (x,y): x or y end,bl,false)) # right fold, id element of boolean or is true

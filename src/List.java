@@ -9,6 +9,10 @@ public class List {
 		this.elements = values;
 	}
 	
+	public List(){
+		this.elements.add(new Value());
+	}
+	
 	public Value first(){
 		if(elements.isEmpty() == true){
 			return new Value() ; //add a null element

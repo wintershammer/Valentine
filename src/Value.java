@@ -33,13 +33,8 @@ public class Value {
 	}
 	
 	public Value(List l){
-		if (l.elements.isEmpty()){
-			this.curType = ValType.NULL;
-		}
-		else{
-			this.l = l;
-			this.curType = ValType.LIST;
-		}
+		this.l = l;
+		this.curType = ValType.LIST;
 	}
 	
 	public Value(Integer i){

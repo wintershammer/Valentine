@@ -18,12 +18,6 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunCallFC1(@NotNull MyGParser.FunCallFC1Context ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyGParser#argument}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArgument(@NotNull MyGParser.ArgumentContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MyGParser#funCallFC}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -43,12 +37,6 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitString(@NotNull MyGParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#funCallInt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunCallInt(@NotNull MyGParser.FunCallIntContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code MulDiv}
 	 * labeled alternative in {@link MyGParser#expression}.
@@ -103,6 +91,12 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParen(@NotNull MyGParser.ParenContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#headSt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHeadSt(@NotNull MyGParser.HeadStContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code plain}
 	 * labeled alternative in {@link MyGParser#program}.
@@ -193,11 +187,11 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfStatement(@NotNull MyGParser.IfStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyGParser#funCall}.
+	 * Visit a parse tree produced by {@link MyGParser#tailSt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunCall(@NotNull MyGParser.FunCallContext ctx);
+	T visitTailSt(@NotNull MyGParser.TailStContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code int}
 	 * labeled alternative in {@link MyGParser#expression}.
@@ -225,6 +219,13 @@ public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAnonCall1(@NotNull MyGParser.AnonCall1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code listCheck}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListCheck(@NotNull MyGParser.ListCheckContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyGParser#consequent}.
 	 * @param ctx the parse tree

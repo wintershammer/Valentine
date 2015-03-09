@@ -1,0 +1,62 @@
+def map(f,lst, rslt):
+	if null?(lst):
+		list()
+	end
+	else:
+		fr = f(first(lst))
+		append(rslt,fr)
+		r = map(f,rest(lst),rslt)
+		rslt
+	end
+end
+
+def length(lst):
+	if null?(lst):
+		0
+	end
+	else:
+		1 + length(rest(lst))
+	end
+end
+
+def filter(pr,lst,rslt):
+	if null?(lst):
+		list()
+	end
+	else:
+		if pr(first(lst)):
+			append(rslt,first(lst))
+		end
+		filter(pr,rest(lst),rslt)
+	end
+	rslt
+end
+
+def contains(lst,key):
+	if null?(filter(lambda(x): x == key end,lst,list())) :
+		false
+	end
+	else :
+		true
+	end
+end
+
+def reduceR(f,lst,init):
+	if null?(lst):
+		init
+	end
+	else:
+		f(first(lst),reduceR(f,rest(lst),init))
+	end
+end
+
+def reduceL(f,lst,init):
+	if null?(lst):
+		init
+	end
+	else:
+		reduceL(f,rest(lst),f(init,first(lst)))
+	end
+end
+
+	

@@ -12,12 +12,13 @@ expression :
 	|anonCreation #anonCreation1
 	|funCallFC #funCallFC1
 	|'delay' '(' expression+ ')' #delayStatement
-	|'list' '(' expression (',' expression)* ')' #listCreation
-	|'first' '(' expression ')' #head
+	|'list' '(' (expression (',' expression)*)* ')' #listCreation
+	|headSt #head
 	|'append' '(' expression (',' expression)* ')' #append //first ID is the list to append to
-	|'rest' '(' expression ')' #tail
+	|tailSt #tail
 	|'print' '(' expression ')' #printStatement
 	|'null?' '(' expression ')' #nullCheck
+	|'list?' '(' expression ')' #listCheck
 	|'load' FILENAME (ID (',' ID)*) #loadStatement
 	|expression relOper expression #boolExpress
 	|expression boolOper expression #boolCheck
@@ -51,29 +52,25 @@ relOper:
 	;
 
 anonCall:
-	anonCreation '(' (argument (',' argument)* ) * ')' 
+	anonCreation '(' (expression (',' expression)* ) * ')' 
 	// ( argument (',' argument)* )* : optional(one argument, optional (more args seperated by commas)) 
 	// arguments are of course optional because a function has the option to take no arguments
 	;
+	
+headSt:
+	'first' '(' expression ')' ;
 
-argument:
-	funCallFC | anonCreation | anonCall | funCall | funCallInt | ID | INT
-	;
+tailSt:
+	 'rest' '(' expression ')' ;
+
 
 anonCreation:	
 	'lambda' '(' (ID (',' ID)*)* ')' ':' expression+ 'end' 
 	;
 	
-funCallInt: 
-	ID '(' INT (',' INT)* ')'
-	;
-
-funCall:
-	ID '(' (ID (',' ID)* )* ')'
-	;
 
 funCallFC:
-	ID '(' ( argument (',' argument)* )*  ')'
+	ID '(' ( expression (',' expression)* )*  ')'
 	;
 
 funCreation:

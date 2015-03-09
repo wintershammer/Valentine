@@ -125,8 +125,8 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		List list = null;
 		Value rValue;
 		
-		if(ctx.expression() != null){  // or the first conditional expression to the result if it exists
-			list = visit(ctx.expression()).getList();
+		if(ctx.headSt().expression() != null){  // or the first conditional expression to the result if it exists
+			list = visit(ctx.headSt().expression()).getList();
 		}
 		
 		rValue = list.first();
@@ -140,8 +140,8 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		List list = null;
 		Value rValue;
 		
-		if(ctx.expression() != null){  // or the first conditional expression to the result if it exists
-			list = visit(ctx.expression()).getList();
+		if(ctx.tailSt().expression() != null){  // or the first conditional expression to the result if it exists
+			list = visit(ctx.tailSt().expression()).getList();
 		}
 		
 		List restList = new List(list.rest());
@@ -322,6 +322,29 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		if(s == "NULL"){
 			result = true;
 		}
+		else if( s == "LIST"){ //empty list is null too!
+			if (visit(ctx.expression()).getList().elements.isEmpty()){
+				result = true;
+			}
+		}
+		
+		Value rV = new Value(result);
+		
+		return rV;
+		
+	}
+	
+	
+	@Override
+	public Value visitListCheck(@NotNull MyGParser.ListCheckContext ctx) {
+		
+		String s = visit(ctx.expression()).getType();
+
+		Boolean result = false;
+		
+		if(s == "LIST"){
+			result = true;
+		}
 		
 		Value rV = new Value(result);
 		
@@ -354,59 +377,6 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		return value;
 	}
 
-	@Override
-	public Value visitFunCall(@NotNull MyGParser.FunCallContext ctx) {
-
-		String key = ctx.ID(0).getText();
-		// String key2 = ctx.ID(1).getText();
-
-		Function function = null;
-		ArrayList<Value> parameters = new ArrayList<Value>();
-		Value value;
-
-		if (memory.containsKey(key)) {
-			function = memory.get(key).getFunction();
-		}
-
-		for (int i = 1; i < ctx.ID().size(); i++) {
-			String key2 = ctx.ID(i).getText();
-			if (memory.containsKey(key2)) {
-
-				parameters.add(memory.get(key2));
-			}
-		}
-
-		value = function.invoke(parameters);
-
-		return value;
-	}
-
-	@Override
-	public Value visitFunCallInt(@NotNull MyGParser.FunCallIntContext ctx) {
-
-		String key = ctx.ID().getText();
-
-		Function function = null;
-		// Value parameter1 = new Value(Integer.valueOf(ctx.INT(0).getText()));
-		ArrayList<Value> parameters = new ArrayList<Value>();
-
-		for (int i = 0; i < ctx.INT().size(); i++) {
-			Value parameter = new Value(Integer.valueOf(ctx.INT(i).getText()));
-			parameters.add(parameter);
-		}
-
-		// parameters.add(parameter1);
-
-		if (memory.containsKey(key)) {
-			function = memory.get(key).getFunction();
-		}
-
-		Value value;
-
-		value = function.invoke(parameters);
-
-		return value;
-	}
 
 	@Override
 	public Value visitFunCallFC(@NotNull MyGParser.FunCallFCContext ctx) {
@@ -418,8 +388,8 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		ArrayList<Value> parameters = new ArrayList<Value>();
 		
 		
-		for(int i = 0; i < ctx.argument().size(); i++){
-			Value val = visit(ctx.argument(i));
+		for(int i = 0; i < ctx.expression().size(); i++){
+			Value val = visit(ctx.expression(i));
 			parameters.add(val);
 		}
 		
@@ -472,8 +442,8 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		ArrayList<Value> parameters = new ArrayList<Value>();
 		
 		
-		for(int i = 0; i < ctx.argument().size(); i++){
-			Value val = visit(ctx.argument(i));
+		for(int i = 0; i < ctx.expression().size(); i++){
+			Value val = visit(ctx.expression(i));
 			parameters.add(val);
 		}
 		
@@ -504,48 +474,6 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		return value;
 	}
 	
-	@Override
-	public Value visitArgument(@NotNull MyGParser.ArgumentContext ctx) {
-		
-		Value value = new Value();
-		
-		if (ctx.ID() != null) {
-			String id = ctx.ID().getText();
-			if (memory.containsKey(id)) {
-				value = memory.get(id);
-			}
-		}
-	
-		else if (ctx.INT() != null){
-			value = new Value(Integer.valueOf(ctx.INT().getText()));
-		}
-		
-		else if(ctx.anonCall() != null){
-			value = visit(ctx.anonCall());
-		}
-		
-		else if(ctx.anonCreation() != null){
-			value = visit(ctx.anonCreation());
-		}
-		
-		else if(ctx.funCall() != null){
-			value = visit(ctx.funCall());
-		}
-		
-		else if(ctx.funCallInt() != null){
-			value = visit(ctx.funCallInt());
-		}	
-		
-		else if(ctx.funCallFC() != null){
-			value = visit(ctx.funCallFC());
-		}	
-		
-		else{
-			System.out.println("something went wrong at: " + ctx.getRuleIndex());
-		}
-
-		return value;
-	}
 	
 
 	@Override
