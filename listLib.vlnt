@@ -59,4 +59,11 @@ def reduceL(f,lst,init):
 	end
 end
 
-	
+def nth(n,lst){
+	if n == 0{
+		first(lst)
+	}
+	else{
+		nth(n-1,rest(lst))
+	}
+}	
