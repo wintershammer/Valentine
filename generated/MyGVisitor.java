@@ -1,4 +1,4 @@
-// Generated from MyG.g4 by ANTLR 4.4
+// Generated from MyG.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -11,238 +11,300 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MyGVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by the {@code funCallFC1}
+	 * Visit a parse tree produced by the {@code plain}
+	 * labeled alternative in {@link MyGParser#program}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPlain(MyGParser.PlainContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code apply}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunCallFC1(@NotNull MyGParser.FunCallFC1Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#funCallFC}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunCallFC(@NotNull MyGParser.FunCallFCContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code bool}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBool(@NotNull MyGParser.BoolContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code string}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(@NotNull MyGParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code MulDiv}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMulDiv(@NotNull MyGParser.MulDivContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code listCreation}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListCreation(@NotNull MyGParser.ListCreationContext ctx);
+	T visitApply(MyGParser.ApplyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code funCreation1}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunCreation1(@NotNull MyGParser.FunCreation1Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#funCreation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunCreation(@NotNull MyGParser.FunCreationContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code head}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHead(@NotNull MyGParser.HeadContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code reference}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReference(@NotNull MyGParser.ReferenceContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#boolOper}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolOper(@NotNull MyGParser.BoolOperContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code paren}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParen(@NotNull MyGParser.ParenContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#headSt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHeadSt(@NotNull MyGParser.HeadStContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code plain}
-	 * labeled alternative in {@link MyGParser#program}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPlain(@NotNull MyGParser.PlainContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code anonCreation1}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnonCreation1(@NotNull MyGParser.AnonCreation1Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#anonCall}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnonCall(@NotNull MyGParser.AnonCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code nullCheck}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNullCheck(@NotNull MyGParser.NullCheckContext ctx);
+	T visitFunCreation1(MyGParser.FunCreation1Context ctx);
 	/**
 	 * Visit a parse tree produced by the {@code delayStatement}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDelayStatement(@NotNull MyGParser.DelayStatementContext ctx);
+	T visitDelayStatement(MyGParser.DelayStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MulDiv}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulDiv(MyGParser.MulDivContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mapGet}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMapGet(MyGParser.MapGetContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code paren}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParen(MyGParser.ParenContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code head}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHead(MyGParser.HeadContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code boolExpress}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBoolExpress(@NotNull MyGParser.BoolExpressContext ctx);
+	T visitBoolExpress(MyGParser.BoolExpressContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AddSub}
+	 * Visit a parse tree produced by the {@code mapCreation}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddSub(@NotNull MyGParser.AddSubContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code assignment}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignment(@NotNull MyGParser.AssignmentContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code tail}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTail(@NotNull MyGParser.TailContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code loadStatement}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLoadStatement(@NotNull MyGParser.LoadStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#alternative}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAlternative(@NotNull MyGParser.AlternativeContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code boolCheck}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolCheck(@NotNull MyGParser.BoolCheckContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ifStatement}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIfStatement(@NotNull MyGParser.IfStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#tailSt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTailSt(@NotNull MyGParser.TailStContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code int}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInt(@NotNull MyGParser.IntContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#relOper}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRelOper(@NotNull MyGParser.RelOperContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code printStatement}
-	 * labeled alternative in {@link MyGParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx);
+	T visitMapCreation(MyGParser.MapCreationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code anonCall1}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAnonCall1(@NotNull MyGParser.AnonCall1Context ctx);
+	T visitAnonCall1(MyGParser.AnonCall1Context ctx);
 	/**
-	 * Visit a parse tree produced by the {@code listCheck}
+	 * Visit a parse tree produced by the {@code boolNeg}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitListCheck(@NotNull MyGParser.ListCheckContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#consequent}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConsequent(@NotNull MyGParser.ConsequentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyGParser#anonCreation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnonCreation(@NotNull MyGParser.AnonCreationContext ctx);
+	T visitBoolNeg(MyGParser.BoolNegContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code append}
 	 * labeled alternative in {@link MyGParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAppend(@NotNull MyGParser.AppendContext ctx);
+	T visitAppend(MyGParser.AppendContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code inputStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInputStatement(MyGParser.InputStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code int}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInt(MyGParser.IntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code prepend}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrepend(MyGParser.PrependContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AddSub}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddSub(MyGParser.AddSubContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mapRemove}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMapRemove(MyGParser.MapRemoveContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code listCheck}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListCheck(MyGParser.ListCheckContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code funCallFC1}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunCallFC1(MyGParser.FunCallFC1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code loadStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLoadStatement(MyGParser.LoadStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code tail}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTail(MyGParser.TailContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code printStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintStatement(MyGParser.PrintStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code reference}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReference(MyGParser.ReferenceContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code listCreation}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListCreation(MyGParser.ListCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ifStatement}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStatement(MyGParser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assignment}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignment(MyGParser.AssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code string}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(MyGParser.StringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code anonCreation1}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCreation1(MyGParser.AnonCreation1Context ctx);
+	/**
+	 * Visit a parse tree produced by the {@code bool}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBool(MyGParser.BoolContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code nullCheck}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNullCheck(MyGParser.NullCheckContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolCheck}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolCheck(MyGParser.BoolCheckContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mapAdd}
+	 * labeled alternative in {@link MyGParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMapAdd(MyGParser.MapAddContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#consequent}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConsequent(MyGParser.ConsequentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#alternative}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAlternative(MyGParser.AlternativeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#boolOper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolOper(MyGParser.BoolOperContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#relOper}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelOper(MyGParser.RelOperContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#anonCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCall(MyGParser.AnonCallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#headSt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHeadSt(MyGParser.HeadStContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#tailSt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTailSt(MyGParser.TailStContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#anonCreation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonCreation(MyGParser.AnonCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#funCallFC}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunCallFC(MyGParser.FunCallFCContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#funCreation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunCreation(MyGParser.FunCreationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyGParser#variadicID}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariadicID(MyGParser.VariadicIDContext ctx);
 }
