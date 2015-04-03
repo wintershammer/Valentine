@@ -1,5 +1,7 @@
 # Valentine
 
+(THE SYNTAX OF THE EXAMPLES IS OUT OF DATE)
+
 An interpreted toy language using ANTLR4 for parser/lexer/AST generation
 
 Currently supports:
