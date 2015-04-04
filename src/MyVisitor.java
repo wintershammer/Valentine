@@ -2,8 +2,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
-import org.antlr.v4.codegen.model.LabeledOp;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -50,7 +50,8 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	
 	@Override
 	public Value visitString(MyGParser.StringContext ctx) {
-		return new Value(ctx.getText());
+		String trimed = ctx.getText().substring(1, ctx.getText().length()-1);
+		return new Value(trimed);
 	}	
 	
 	@Override
@@ -160,7 +161,7 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		appendTo = visit(ctx.expression(0)).getList();
 		for(int i = 1; i < ctx.expression().size(); i++){
 			Value element = visit(ctx.expression(i));
-			appendTo.append(appendTo, element);
+			appendTo.append(element);
 		}
 		
 		Value rValue = new Value(appendTo);
@@ -169,6 +170,79 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		
 	}
 	
+	@Override
+	public Value visitPrepend(@NotNull MyGParser.PrependContext ctx) {
+		List prependTo = null;
+		
+		prependTo = visit(ctx.expression(0)).getList();
+		for(int i = 1; i < ctx.expression().size(); i++){
+			Value element = visit(ctx.expression(i));
+			prependTo.prepend(element);
+		}
+
+		return new Value(prependTo);
+		
+	}
+	
+	@Override
+	public Value visitInputStatement(@NotNull MyGParser.InputStatementContext ctx) {
+	    Scanner input = new Scanner(System.in);
+	    
+	    if(ctx.ID().getText().equalsIgnoreCase("str")){
+	    	String answer= input.nextLine();
+	    	input.close();
+	    	return new Value(answer);
+	    }
+	    
+	    else if (ctx.ID().getText().equalsIgnoreCase("int")){
+	    	int answer = input.nextInt();
+	    	input.close();
+	    	return new Value(answer);
+	    }
+	    
+	    input.close();
+		
+		return new Value();
+		
+	}
+	
+	@Override
+	public Value visitApply (@NotNull MyGParser.ApplyContext ctx) { 
+		
+		//HOW APPLY WORKS:
+	    //(apply f args)
+	    //(apply f x args)
+	    //(apply f x y args)
+
+	    //Applies fn f to the argument list formed by prepending intervening arguments(for example x,y) to args.
+		
+		Function function = null;
+		ArrayList<Value> parameters = new ArrayList<Value>();
+	
+		int listIndex = ctx.expression().size()-1;
+		
+		function = visit(ctx.expression(0)).getFunction();
+		
+		if(visit(ctx.expression(listIndex)).getType() != "LIST"){
+			System.out.println("Last argument of apply must always be list");
+			return new Value();
+		}
+		
+		else{
+			parameters = visit(ctx.expression(listIndex)).getList().elements;
+			ArrayList<Value> accumulator = new ArrayList<Value>();
+			for(int i = 1; i < ctx.expression().size()-1; i++){ //size-1 because the last value will always be the list to apply to!
+				accumulator.add(visit(ctx.expression(i)));
+			}
+			parameters.addAll(0, accumulator);
+		}
+		
+		Value value;
+
+		value = function.invoke(parameters);
+
+		return value;
+	}
 	
 	
 	@Override
@@ -243,7 +317,11 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	}
 		
 	
-	
+	@Override
+	public Value visitBoolNeg(@NotNull MyGParser.BoolNegContext ctx) {
+		Boolean bool = visit(ctx.expression()).getBoolean();
+		return new Value(!bool);
+	}
 	
 	@Override
 	public Value visitBoolExpress(@NotNull MyGParser.BoolExpressContext ctx) {
@@ -252,8 +330,15 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 		Value right = visit(ctx.expression(1));
 		
-		String typeLeft = left.getType();
-		String typeRight = right.getType();
+		//String typeLeft = left.getType();
+		//String typeRight = right.getType();
+
+		if(left.getType() != "INTEGER"){
+			System.out.println(left.printSelf() + " " + "Left is not an integer");
+		}
+		if(right.getType() != "INTEGER"){
+			System.out.println(right.printSelf() + " " + "Right is not an integer");
+		}
 
 		Value value = new Value();
 			switch (ctx.relOper().getText()) {
@@ -303,13 +388,19 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	
 	@Override
 	public Value visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx) {
-
-		Value printValue;
 		
-		printValue = visit(ctx.expression());
+		//ArrayList<Value> parameters = new ArrayList<Value>();
+		StringBuilder builder = new StringBuilder();
 		
-		System.out.println(printValue.printSelf());
-		return null;
+		for(int i = 0; i < ctx.expression().size(); i++){
+			Value val = visit(ctx.expression(i));
+			builder.append(val.printSelf());
+			builder.append(" ");
+			
+		}
+		
+		System.out.println(builder.toString());
+		return new Value(builder.toString());
 	}
 	
 	@Override
@@ -360,7 +451,11 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		ParseTree idNode = ctx.ID(0);
 		ArrayList<ParseTree> bodyNode = new ArrayList<ParseTree>();
 		String id = idNode.getText();
+		String variadicParam = "";
+		int varindex = 0;
+		boolean variadicFunction = false;
 		ArrayList<String> idParam = new ArrayList<String>();
+		Function function;
 		
 		for(int i = 0; i < ctx.expression().size() ; i++){
 			bodyNode.add(ctx.expression(i));
@@ -368,9 +463,20 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 		for (int i = 1; i < ctx.ID().size(); i++) {
 			idParam.add(ctx.ID(i).getText());
+			varindex += 1; //variadicID is either first ( so this never runs and it remains 0), or its after all the regular ids (in which case this runs and increments to the last position where vararg should be
 		}
-
-		Function function = new Function(idParam, bodyNode, this.memory);
+		
+		for (int i = 0; i < ctx.variadicID().size(); i++){ //remember : there can only be zero or one variadic argument!
+			variadicFunction = true;
+			variadicParam = ctx.variadicID(i).getText().substring(1, ctx.variadicID(i).getText().length()); //trim the leading (&)
+		}
+		
+		if(variadicFunction == false){
+			function = new Function(idParam, bodyNode, this.memory);
+		}
+		else{
+			function = new Function(idParam,variadicParam,varindex,bodyNode,this.memory);
+		}
 		Value value = new Value(function);
 		memory.put(id, value);
 
@@ -475,6 +581,73 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	}
 	
 	
+	@Override
+	public Value visitMapCreation(@NotNull MyGParser.MapCreationContext ctx) {
+		
+		HashMap<String,Value> container = new HashMap<String,Value>();
+		
+		
+		for(int i = 0; i < ctx.STRING().size(); i++){
+			String key = ctx.STRING(i).getText();
+			Value val = visit(ctx.expression(i));
+			container.put(key, val);
+		}
+			
+
+		MyMap map = new MyMap(container);
+		Value value = new Value(map);
+		
+		return value;
+	}
+	
+	@Override
+	public Value visitMapAdd(@NotNull MyGParser.MapAddContext ctx) {
+		
+		
+		MyMap map = memory.get(ctx.ID().getText()).getMap();
+
+		for (int i = 0; i < ctx.STRING().size(); i++) { // first id is the map to operate on
+			String key = ctx.STRING(i).getText();
+			Value val = visit(ctx.expression(i));
+			map.add(key, val);
+		}
+		
+		return new Value(map);
+	}
+	
+	
+	@Override
+	public Value visitMapRemove(@NotNull MyGParser.MapRemoveContext ctx) {
+		
+		MyMap map = memory.get(ctx.ID().getText()).getMap();
+
+		for (int i = 0; i < ctx.STRING().size(); i++) { // first id is the map to operate on
+			String key = ctx.STRING(i).getText();
+			map.remove(key);
+		}
+		
+		return new Value(map);
+	}
+	
+	@Override
+	public Value visitMapGet(@NotNull MyGParser.MapGetContext ctx) {
+		
+		MyMap map = memory.get(ctx.ID().getText()).getMap();
+		Value rValue = new Value(); //will be a single value if we only fetch a single key or a list if we fetch more than one
+		ArrayList<Value> container = new ArrayList<Value>();
+		
+
+		if(ctx.STRING().size() == 1){
+			rValue = map.get(ctx.STRING(0).getText());
+		}
+		else{
+			for (int i = 0; i < ctx.STRING().size(); i++) { // first id is the map to operate on
+				String key = ctx.STRING(i).getText();
+				rValue = new Value(container.add(map.get(key)));
+			}
+		}
+		return rValue;
+	}
 
 	@Override
 	public Value visitLoadStatement(@NotNull MyGParser.LoadStatementContext ctx) {
@@ -486,15 +659,14 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 			ParseTree tree = parser.program();
 			LibVisitor visitor = new LibVisitor();
 			visitor.visit(tree);
-			Map tempMem = this.memory;
+			Map<String, Value> tempMem = this.memory;
 			if(ctx.ID(0).getText() == "*"){ // if its the kleene star just add copy the visitor's memory
 				tempMem = visitor.memory;
 			}
 			else{
 				for (int i = 0; i < ctx.ID().size(); i++) {  //else just add the values that map to the IDs you passed as arguments in load
 					if (visitor.memory.containsKey(ctx.ID(i).getText())) {
-						tempMem.put(ctx.ID(i).getText(),
-								visitor.memory.get(ctx.ID(i).getText()));
+						tempMem.put(ctx.ID(i).getText(),visitor.memory.get(ctx.ID(i).getText()));
 					}
 				}
 			}

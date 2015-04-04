@@ -1,7 +1,7 @@
 public class Value {
 
 	static enum ValType {
-		DOUBLE, BOOLEAN,INTEGER,FUNCTION, LIST,STRING, NULL
+		DOUBLE, BOOLEAN,INTEGER,FUNCTION, LIST,STRING, NULL,MAP
 	};
 
 	Double d;
@@ -11,6 +11,7 @@ public class Value {
 	List l;
 	String s;
 	ValType curType;
+	MyMap m;
 
 	public Value() {
 		this.curType = ValType.NULL;
@@ -40,6 +41,11 @@ public class Value {
 	public Value(Integer i){
 		this.i = i;
 		this.curType = ValType.INTEGER;
+	}
+	
+	public Value(MyMap m) {
+		this.m = m;
+		this.curType = ValType.MAP;
 	}
 
 	public Value(Boolean b) {
@@ -83,6 +89,14 @@ public class Value {
 		return this.l;
 	}
 	
+	public MyMap getMap(){
+		if(this.curType != ValType.MAP){
+			System.out.println("NOT A MAP");
+		}
+		return this.m;
+	}
+	
+	
 	public String getType(){
 		return this.curType.toString();
 	}
@@ -96,9 +110,6 @@ public class Value {
 		}
 		else if(this.curType == ValType.BOOLEAN){
 			return this.getBoolean().toString();
-		}
-		else if(this.curType == ValType.FUNCTION){
-			return this.getFunction().toString();
 		}
 		else if(this.curType == ValType.FUNCTION){
 			return this.getFunction().toString();
@@ -123,6 +134,18 @@ public class Value {
 		}
 		else if(this.curType == ValType.NULL){
 			return null;
+		}
+		else if(this.curType == ValType.MAP){
+			StringBuilder builder = new StringBuilder();
+			builder.append('{');
+			for(String key : m.map.keySet()){
+				builder.append(key);
+				builder.append(":");
+				builder.append(m.map.get(key).printSelf());
+				builder.append(",");
+				}
+			builder.replace(builder.length()-1, builder.length(), "}"); //replace the last coma with a closing paren
+			return builder.toString();
 		}
 		
 		return "NOT APPLICABLE";

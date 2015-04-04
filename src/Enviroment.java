@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.Map;
 
+//is this even used? 
+
 public abstract class Enviroment {
 	Map<String, Value> map = new HashMap<String, Value>();
 

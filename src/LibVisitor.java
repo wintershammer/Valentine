@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.antlr.v4.codegen.model.LabeledOp;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -160,12 +159,26 @@ public class LibVisitor extends MyGBaseVisitor<Value> {
 		appendTo = visit(ctx.expression(0)).getList();
 		for(int i = 1; i < ctx.expression().size(); i++){
 			Value element = visit(ctx.expression(i));
-			appendTo.append(appendTo, element);
+			appendTo.append(element);
 		}
 		
 		Value rValue = new Value(appendTo);
 		
 		return rValue;
+		
+	}
+	
+	@Override
+	public Value visitPrepend(@NotNull MyGParser.PrependContext ctx) {
+		List prependTo = null;
+		
+		prependTo = visit(ctx.expression(0)).getList();
+		for(int i = 1; i < ctx.expression().size(); i++){
+			Value element = visit(ctx.expression(i));
+			prependTo.prepend(element);
+		}
+
+		return new Value(prependTo);
 		
 	}
 	
@@ -252,9 +265,6 @@ public class LibVisitor extends MyGBaseVisitor<Value> {
 
 		Value right = visit(ctx.expression(1));
 		
-		String typeLeft = left.getType();
-		String typeRight = right.getType();
-
 		Value value = new Value();
 			switch (ctx.relOper().getText()) {
 			case ">":
@@ -303,12 +313,19 @@ public class LibVisitor extends MyGBaseVisitor<Value> {
 	
 	@Override
 	public Value visitPrintStatement(@NotNull MyGParser.PrintStatementContext ctx) {
-
-		Value printValue;
 		
-		printValue = visit(ctx.expression());
+		ArrayList<Value> values = new ArrayList<Value>();
+		String printValue = "";
 		
-		System.out.println(printValue.printSelf());
+		for(int i = 0; i < ctx.expression().size(); i++){
+			values.add(visit(ctx.expression(0)));
+		}
+		
+		for(Value val : values){
+			printValue.concat(val.printSelf());
+		}
+		
+		System.out.println(printValue);
 		return null;
 	}
 	
@@ -463,7 +480,7 @@ public class LibVisitor extends MyGBaseVisitor<Value> {
 			ParseTree tree = parser.program();
 			LibVisitor visitor = new LibVisitor();
 			visitor.visit(tree);
-			Map tempMem = this.memory;
+			Map<String, Value> tempMem = this.memory;
 			if(ctx.ID(0).getText() == "*"){ // if its the kleene star just add copy the visitor's memory
 				tempMem = visitor.memory;
 			}

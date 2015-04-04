@@ -10,12 +10,12 @@ public class List {
 	}
 	
 	public List(){
-		this.elements.add(new Value());
+		this.elements.add(new Value()); //null
 	}
 	
 	public Value first(){
 		if(elements.isEmpty() == true){
-			return new Value() ; //add a null element
+			return new Value() ; //return a null element
 		}
 		return elements.get(0);
 	}
@@ -28,11 +28,13 @@ public class List {
 		return toReturn;
 	}
 	
-	public List append (List appendTo,Value element){
-		
+	public void append (Value element){
 		this.elements.add(element);
-		return appendTo;
 		
+	}
+	
+	public void prepend(Value element){
+		this.elements.add(0, element);
 	}
 	
 }
