@@ -45,16 +45,13 @@ def f (x){ #typical function definition
 }  
 
 def fibo(x){ # an example function : a fibonacci series generator
-  c = 0
+  # last evaluated element is returned as the value of a function
   if x == 1 or x == 0{
-    c = x
+    x
   }
   else{
-    l = x - 1
-    r = x - 2
-    c = fibo(l) + fibo(r)
+    fibo(x - 1) + fibo(x - 2)
   }
-  c # last evaluated element is returned as the value of a function
 }
 
 lambda (x,y){ x / y } #anonymous function declaration
