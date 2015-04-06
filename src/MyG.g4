@@ -23,6 +23,7 @@ expression :
 	|'null?' '(' expression ')' #nullCheck
 	|'list?' '(' expression ')' #listCheck
 	|'load' FILENAME (ID (',' ID)*) #loadStatement
+	|'base' expression (boolOper expression)* '{' consequent '}' ('rec' '{' alternative funCallFC '}') #loop
 	|anonCall #anonCall1
 	|funCallFC #funCallFC1
 	|anonCreation #anonCreation1
@@ -82,7 +83,7 @@ funCallFC:
 	;
 
 funCreation:
-	'def' ID'(' ( variadicID | ID (',' ID)* (',' variadicID)? )* ')' '{' expression+ '}' 
+	'def' ID'(' ( variadicID | (ID | defaultID)  (',' (ID | defaultID) )* (',' variadicID)? )* ')' '{' expression+ '}' 
 	//arguments can be: a single variadic ID or one or more regular IDs followed by a zero or one variadic id(? = zero or one) 
 	//for example: valid arguments are: () none, (x) single ID, (&x) single vararg, (x,&x),(x,y,&x) etc
 	//again : one or more arguments are optional.
@@ -90,6 +91,10 @@ funCreation:
 	
 variadicID:
 	'&' ID
+	;
+
+defaultID:
+	ID '=' expression+
 	;
 
 COMMENT:  '#' ~( '\r' | '\n' )* -> skip;

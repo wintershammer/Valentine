@@ -12,7 +12,7 @@ public class Function {
 	String variadicParam = "";
 	boolean variadic = false;
 	int variadicIndex;
-	
+	int numOfDefaults = 0;
 	
 	public Function(ArrayList<String> params,ArrayList<ParseTree> bodyNode,Map<String,Value> enviroment){
 		this.params.addAll(params);
@@ -29,10 +29,20 @@ public class Function {
 		this.variadicIndex = varindex;
 	}
 	
+	
+	public void incrementDefaults(int i){
+		this.numOfDefaults += i;
+	}
+	
+	
 	public Value invoke(ArrayList<Value> args){
 		
 		if(variadic == false){//if the function is not variadic (ie its of fixed arity), then we must check if the user a correct number of values for the invocation
-			if(args.size() != this.params.size()){
+			if(!(args.size() <= this.params.size() && args.size() >= this.params.size() - this.numOfDefaults)){
+		//  if (size of arguments is not between max and least)
+	    //  where max is params.size (which means you supplied overriding values for the default arguments) 
+		//  and least is params.size() - number of default arguments (which means you supplied values only for the needed arguments, the rest will take their default value
+				System.out.println("ARGS: " + args.size() + "<=" + this.params.size() + " && " + ">=" + (this.params.size() - this.numOfDefaults));
 				System.out.println("Error: You supplied an incorrect number of arguments"); //this should be more specific : where? to which function?
 				return new Value(); //return a null value. should i handle this differently?
 			}
@@ -47,7 +57,7 @@ public class Function {
 		
 
 		if(this.variadic == false){
-			for(int i = 0; i < this.params.size() ; i++){
+			for(int i = 0; i < args.size() ; i++){ 
 				newEnv.put(this.params.get(i), args.get(i));
 			}
 		}

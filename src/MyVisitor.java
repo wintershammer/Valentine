@@ -456,15 +456,26 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		boolean variadicFunction = false;
 		ArrayList<String> idParam = new ArrayList<String>();
 		Function function;
+		Map<String, Value> tempMem = this.memory; //only useful if we have default arguments, otherwise we could just pass memory to function constructor immediately
+		int nDef = 0;
+		
 		
 		for(int i = 0; i < ctx.expression().size() ; i++){
 			bodyNode.add(ctx.expression(i));
 		}
 
-		for (int i = 1; i < ctx.ID().size(); i++) {
+		for (int i = 1; i < ctx.ID().size(); i++) { //remember : we start from 1 because ID(0) is the name of the function we are defining
 			idParam.add(ctx.ID(i).getText());
 			varindex += 1; //variadicID is either first ( so this never runs and it remains 0), or its after all the regular ids (in which case this runs and increments to the last position where vararg should be
 		}
+		
+		for(int i = 0; i < ctx.defaultID().size(); i++ ){
+			idParam.add(ctx.defaultID(i).ID().getText());
+			varindex += 1; //as above, we increment the pointer to the place that the variadic argument will eventually be placed
+			tempMem.put(ctx.defaultID(i).ID().getText(),visit(ctx.defaultID(i).expression(i)));
+			nDef += 1;
+		}
+		
 		
 		for (int i = 0; i < ctx.variadicID().size(); i++){ //remember : there can only be zero or one variadic argument!
 			variadicFunction = true;
@@ -472,10 +483,12 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		}
 		
 		if(variadicFunction == false){
-			function = new Function(idParam, bodyNode, this.memory);
+			function = new Function(idParam, bodyNode, tempMem);
+			function.incrementDefaults(nDef);
 		}
 		else{
-			function = new Function(idParam,variadicParam,varindex,bodyNode,this.memory);
+			function = new Function(idParam,variadicParam,varindex,bodyNode,tempMem);
+			function.incrementDefaults(nDef);
 		}
 		Value value = new Value(function);
 		memory.put(id, value);
@@ -677,6 +690,81 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		
 		return new Value();
 	}
+	
+	@Override
+	public Value visitLoop(@NotNull MyGParser.LoopContext ctx) {
+				
+		boolean run = true;
+		
+		Value rValue = new Value();
+		
+		ArrayList<Value> extraConditions = new ArrayList<Value>();
+		Value value = new Value();
+		Boolean result = null; //this initialisation could be a problem.		
+		
+		
+		while(run){
+					
+			if(ctx.expression(0) != null){  // or the first conditional expression to the result if it exists
+				result = visit(ctx.expression(0)).getBoolean();
+			}
+			
+			for (int i = 1; i < ctx.expression().size(); i++) { // now add all the subsequent conditions if they exist
+				if (ctx.expression(i) != null) {
+					extraConditions.add(visit(ctx.expression(0)));
+				}
+			}
+			
+			
+			for (int i = 0; i < extraConditions.size(); i++){ //and check them against the previous ones using the operator
+				if (ctx.boolOper(i) != null) {
+					switch (ctx.boolOper(i).getText()) {
+					case "and":
+						result = result & extraConditions.get(i).getBoolean();
+						break;
+					case "or":
+						result = result | extraConditions.get(i).getBoolean();
+						break;
+					}
+				}
+			}
+			
+			
+			//System.out.println(condition.getBoolean());
+			
+			if (result != null) {
+				if (result) {
+					rValue = visit(ctx.consequent());
+					run = false;
+				} else {
+					if (ctx.alternative() != null)
+						rValue = visit(ctx.alternative());
+				}
+			}
+			
+			//------------------------------------------------------------------//
+			
+			Function f = null;
+			String key = ctx.funCallFC().ID().getText();
+			
+			if (memory.containsKey(key)) {
+				f = memory.get(key).getFunction();
+				//System.out.println("function exists");
+			}
+			
+			for(int i = 0; i < ctx.funCallFC().expression().size(); i++){
+				Value val = visit(ctx.funCallFC().expression(i));
+				memory.put(f.params.get(i), val);
+			}
+			
+			
+		}
+		
+		
+		return rValue;
+	}
+	
+	
 	
 	
 }
