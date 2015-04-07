@@ -51,11 +51,17 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 
 	@Override
 	public Value visitInt(MyGParser.IntContext ctx) {
+		if(ctx.MINUS() != null){
+			return new Value(0 - Integer.valueOf(ctx.INT().getText())); //handle negatives
+		}
 		return new Value(Integer.valueOf(ctx.INT().getText()));
 	}
 	
 	@Override
 	public Value visitDouble(MyGParser.DoubleContext ctx) {
+		if(ctx.MINUS() != null){
+			return new Value(0 - Double.valueOf(ctx.DOUBLE().getText())); //handle negatives
+		}
 		return new Value(Double.valueOf(ctx.DOUBLE().getText()));
 	}
 

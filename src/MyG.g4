@@ -36,8 +36,8 @@ expression :
 	|expression op=('+'|'-') expression  # AddSub     // match keyword hello followed by an identifier	
 	|ID '=' expression #assignment
 	|ID				# reference
-	|INT				 # int	
-	|DOUBLE 				#double
+	|MINUS? INT				 # int	
+	|MINUS? DOUBLE 				#double
 	|BOOLEAN 			 #bool
 	|STRING #string // ~ is negation : everything but \r \n or "
 
@@ -104,9 +104,9 @@ FILENAME:  '::' ~( '\r' | '\n')* '::';
 STRING: '"' ~('\r' | '\n' | '"')* '"';
 BOOLEAN: ('true' | 'false');
 ID : ([a-z] | [A-Z])+ ;
-INT : MINUS? [0-9]+ ;          //optional(? = zero or one) : minus character to denote negative numbers
+INT : [0-9]+ ;          //optional(? = zero or one) : minus character to denote negative numbers
 POINT : '.';
-DOUBLE : MINUS? INT+ POINT INT+;
+DOUBLE : INT+ POINT INT+;
 MINUS: '-';
 WS : [ \t\r\n]+ -> skip ; 
 NEWLINE:'\r'? '\n' ;
