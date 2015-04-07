@@ -89,6 +89,21 @@ public class Value {
 		return this.l;
 	}
 	
+	
+	public Number getNumerical(){
+		if(this.curType == ValType.DOUBLE){
+			return this.d;
+		}
+		else if(this.curType == ValType.INTEGER){
+			return this.i;
+		}
+		else{
+			System.out.println("NOT OF NUMERICAL TYPE");
+			return null; //this is going to trigger a nullpointerexception, i should handle it more gracefuly
+		}
+	}
+	
+	
 	public MyMap getMap(){
 		if(this.curType != ValType.MAP){
 			System.out.println("NOT A MAP");

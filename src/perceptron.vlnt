@@ -1,0 +1,123 @@
+
+def map(f,lst){ #YIIIHA NO MORE STUPID RSLT!
+	if null?(lst){
+		list()
+	}
+	else{
+		prepend(map(f,rest(lst)),f(first(lst)))
+	}
+}
+
+def car(x){
+	first(x)
+}
+
+def cdr(x){
+	rest(x)
+}
+
+def helper(&x){
+	print(x)
+}
+
+def varmap(f,&args){
+	if null?(first(args)){
+		list()
+	}
+	else{ 
+		prepend(apply(varmap,f,map(cdr,args)),apply(f,map(car,args)))
+		
+	}
+}
+
+#########
+
+def unitstep(x){
+	if x < 0 {
+		0
+	}
+	else{
+		1
+	}
+}
+
+
+def dotprod(a,b,result = 0){ #dot/inner product
+	if(null?(a)){
+		result
+	}
+	else{
+		result = result + first(a) * first(b)
+		dotprod(rest(a),rest(b),result)
+	}
+}
+
+			
+def process(data,weights){
+	if(null?(data)){
+		weights
+	}
+	else{
+		x = first(first(data))
+		expected = first(rest(first(data)))
+		
+		result = dotprod(weights,x)
+		
+		error = expected - unitstep(result)
+		
+		correction = map(lambda(x){ x * error * eta}, x)
+		
+		
+		weights = varmap(lambda(x,y){ x + y } , correction , weights)
+
+		process(rest(data),weights)
+	}
+}
+
+def train(data,weights,times){
+	base(times == 1){
+		process(data,weights)
+	}
+	rec{
+		newweigh = process(data,weights)
+		train(data,newweigh,times - 1)
+	}
+}
+
+
+#######
+
+w = list(rand(0,1),rand(0,1),rand(0,1))
+
+eta = 0.2
+n = 100
+
+
+trdata = list(
+			list(list(0,0,1),0),
+			list(list(0,1,1),1),
+			list(list(1,0,1),1),
+			list(list(1,1,1),1)
+			)
+			
+
+
+
+finalweights = train(trdata,w,n)
+
+def tryall(data){
+	if null?(data){
+		print("done")
+	}
+	else{
+		f = first(first(data))
+		rs = dotprod(finalweights,f)
+		act = unitstep(rs)
+		
+		print(first(f),"or",first(rest(f)),":",act)
+		
+		tryall(rest(data))
+	}
+}
+
+tryall(trdata)

@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -23,14 +24,25 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		Value left = visit(ctx.expression(0));
 
 		Value right = visit(ctx.expression(1));
+		
 
 		Value value = new Value();
 		switch (ctx.op.getText().charAt(0)) {
 		case '+':
-			value = new Value(left.getInteger() + right.getInteger());
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ //if either one is double then return a double Value
+				value = new Value(left.getNumerical().doubleValue() + right.getNumerical().doubleValue());
+			}
+			else{ //else (both are integers)  : return an int Value
+				value = new Value(left.getNumerical().intValue() + right.getNumerical().intValue());
+			}
 			break;
 		case '-':
-			value = new Value(left.getInteger() - right.getInteger());
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ //if either one is double then return a double Value
+				value = new Value(left.getNumerical().doubleValue() - right.getNumerical().doubleValue());
+			}
+			else{ //else (both are integers)  : return an int Value
+				value = new Value(left.getNumerical().intValue() - right.getNumerical().intValue());
+			}
 			break;
 		}
 
@@ -40,6 +52,11 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	@Override
 	public Value visitInt(MyGParser.IntContext ctx) {
 		return new Value(Integer.valueOf(ctx.INT().getText()));
+	}
+	
+	@Override
+	public Value visitDouble(MyGParser.DoubleContext ctx) {
+		return new Value(Double.valueOf(ctx.DOUBLE().getText()));
 	}
 
 	@Override
@@ -89,10 +106,20 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		Value value = new Value();
 		switch (ctx.op.getText().charAt(0)) {
 		case '*':
-			value = new Value(left.getInteger() * right.getInteger());
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ //if either one is double then return a double Value
+				value = new Value(left.getNumerical().doubleValue() * right.getNumerical().doubleValue());
+			}
+			else{ //else (both are integers)  : return an int Value
+				value = new Value(left.getNumerical().intValue() * right.getNumerical().intValue());
+			}
 			break;
 		case '/':
-			value = new Value(left.getInteger() / right.getInteger());
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ //if either one is double then return a double Value
+				value = new Value(left.getNumerical().doubleValue() / right.getNumerical().doubleValue());
+			}
+			else{ //else (both are integers)  : return an int Value
+				value = new Value(left.getNumerical().intValue() / right.getNumerical().intValue());
+			}
 			break;
 
 		}
@@ -333,52 +360,101 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 		//String typeLeft = left.getType();
 		//String typeRight = right.getType();
 
-		if(left.getType() != "INTEGER"){
-			System.out.println(left.printSelf() + " " + "Left is not an integer");
+		if(left.getType() != "INTEGER" && left.getType() != "DOUBLE"){
+			System.out.println(left.printSelf() + " " + "Left is not of numerical type");
 		}
-		if(right.getType() != "INTEGER"){
-			System.out.println(right.printSelf() + " " + "Right is not an integer");
+		if(right.getType() != "INTEGER" && right.getType() != "DOUBLE"){
+			System.out.println(right.printSelf() + " " + "right is not of numerical type");
 		}
 
 		Value value = new Value();
 			switch (ctx.relOper().getText()) {
 			case ">":
-			if (left.getInteger() > right.getInteger()) // should add a getType method on Value to compare more than integers
-				value = new Value(true);
-			else
-				value = new Value(false);
+				if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ 
+					if (left.getNumerical().doubleValue() > right.getNumerical().doubleValue())
+						value = new Value(true);
+					else
+						value = new Value(false);
+				}
+				else{ 
+					if (left.getNumerical().intValue() > right.getNumerical().intValue())
+						value = new Value(true);
+					else
+						value = new Value(false);
+				}
 			break;
 		case "<":
-			if (left.getInteger() < right.getInteger())
-				value = new Value(true);
-			else
-				value = new Value(false);
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ 
+				if (left.getNumerical().doubleValue() < right.getNumerical().doubleValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
+			else{ 
+				if (left.getNumerical().intValue() < right.getNumerical().intValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
+			break;
 		case "<=":
-			if (left.getInteger() <= right.getInteger())
-				value = new Value(true);
-			else
-				value = new Value(false);
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ 
+				if (left.getNumerical().doubleValue() <= right.getNumerical().doubleValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
+			else{ 
+				if (left.getNumerical().intValue() <= right.getNumerical().intValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
 			break;
 
 		case ">=":
-			if (left.getInteger() >= right.getInteger())
-				value = new Value(true);
-			else
-				value = new Value(false);
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ 
+				if (left.getNumerical().doubleValue() >= right.getNumerical().doubleValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
+			else{ 
+				if (left.getNumerical().intValue() >= right.getNumerical().intValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
 			break;
 
 		case "==":
-			if (left.getInteger() == right.getInteger())
-				value = new Value(true);
-			else
-				value = new Value(false);
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ 
+				if (left.getNumerical().doubleValue() == right.getNumerical().doubleValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
+			else{ 
+				if (left.getNumerical().intValue() == right.getNumerical().intValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
 			break;
 
 		case "!=":
-			if (left.getInteger() != right.getInteger())
-				value = new Value(true);
-			else
-				value = new Value(false);
+			if(left.getType() == "DOUBLE" || right.getType() == "DOUBLE"){ 
+				if (left.getNumerical().doubleValue() != right.getNumerical().doubleValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
+			else{ 
+				if (left.getNumerical().intValue() != right.getNumerical().intValue())
+					value = new Value(true);
+				else
+					value = new Value(false);
+			}
 			break;
 		}
 		
@@ -765,6 +841,16 @@ public class MyVisitor extends MyGBaseVisitor<Value> {
 	}
 	
 	
+	@Override
+	public Value visitRandom(MyGParser.RandomContext ctx) {
+		int max = visit(ctx.expression(0)).getInteger();
+		int min = visit(ctx.expression(1)).getInteger();
+		
+		Random randomGenerator = new Random();
+		double num = randomGenerator.nextDouble()*(max-min) + min;
+		
+		return new Value(num);
+	}
 	
 	
 }

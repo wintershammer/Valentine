@@ -16,14 +16,15 @@ expression :
 	|ID '.' 'remove' '(' STRING (',' STRING)* ')' #mapRemove
 	|ID '.' 'get' '(' STRING (',' STRING)* ')' #mapGet
 	|headSt #head
+	|tailSt #tail
 	|'append' '(' expression (',' expression)* ')' #append //first ID is the list to append to
 	|'prepend' '(' expression (',' expression)* ')' #prepend //first ID is list to prepend to
-	|tailSt #tail
 	|'print' '(' expression (',' expression)* ')' #printStatement
 	|'null?' '(' expression ')' #nullCheck
 	|'list?' '(' expression ')' #listCheck
 	|'load' FILENAME (ID (',' ID)*) #loadStatement
 	|'base' expression (boolOper expression)* '{' consequent '}' ('rec' '{' alternative funCallFC '}') #loop
+	|'rand' '(' expression ',' expression ')' #random
 	|anonCall #anonCall1
 	|funCallFC #funCallFC1
 	|anonCreation #anonCreation1
@@ -36,6 +37,7 @@ expression :
 	|ID '=' expression #assignment
 	|ID				# reference
 	|INT				 # int	
+	|DOUBLE 				#double
 	|BOOLEAN 			 #bool
 	|STRING #string // ~ is negation : everything but \r \n or "
 
@@ -102,6 +104,9 @@ FILENAME:  '::' ~( '\r' | '\n')* '::';
 STRING: '"' ~('\r' | '\n' | '"')* '"';
 BOOLEAN: ('true' | 'false');
 ID : ([a-z] | [A-Z])+ ;
-INT : [0-9]+ ;             // match lower-case identifiers
+INT : MINUS? [0-9]+ ;          //optional(? = zero or one) : minus character to denote negative numbers
+POINT : '.';
+DOUBLE : MINUS? INT+ POINT INT+;
+MINUS: '-';
 WS : [ \t\r\n]+ -> skip ; 
 NEWLINE:'\r'? '\n' ;
