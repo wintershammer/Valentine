@@ -1,0 +1,251 @@
+load ::./src/listLib.vlnt:: nth,length,sortBy
+
+def map(f,lst){ #YIIIHA NO MORE STUPID RSLT!
+	if null?(lst){
+		list()
+	}
+	else{
+		prepend(map(f,rest(lst)),f(first(lst)))
+	}
+}
+
+def car(x){
+	first(x)
+}
+
+def cdr(x){
+	rest(x)
+}
+
+def helper(&x){
+	print(x)
+}
+
+def varmap(f,&args){
+	if null?(first(args)){
+		list()
+	}
+	else{ 
+		prepend(apply(varmap,f,map(cdr,args)),apply(f,map(car,args)))
+		
+	}
+}
+
+#########
+
+def unitstep(x){
+	if x < 0 {
+		0
+	}
+	else{
+		1
+	}
+}
+
+
+def dotprod(a,b,result = 0){ #dot/inner product
+	if(null?(a)){
+		result
+	}
+	else{
+		result = result + first(a) * first(b)
+		dotprod(rest(a),rest(b),result)
+	}
+}
+
+			
+def process(data,weights){
+	if(null?(data)){
+		weights
+	}
+	else{
+		x = first(first(data))
+		expected = first(rest(first(data)))
+		
+		result = dotprod(weights,x)
+		
+		error = expected - unitstep(result)
+		
+		correction = map(lambda(x){ x * error * eta}, x)
+		
+		
+		weights = varmap(lambda(x,y){ x + y } , correction , weights)
+
+		process(rest(data),weights)
+	}
+}
+
+def train(data,weights,times){
+	base(times == 1){
+		process(data,weights)
+	}
+	rec{
+		newweigh = process(data,weights)
+		train(data,newweigh,times - 1)
+	}
+}
+
+
+def errorFunc(data,weights){ #fitness function for neuroevolution
+	if(null?(data)){
+		list()
+	}
+	else{
+		x = first(first(data))
+		expected = first(rest(first(data)))
+		
+		result = dotprod(weights,x)
+		
+		error = expected - unitstep(result)
+	
+		prepend(errorFunc(rest(data),weights),error)
+	}
+}
+
+#######
+
+w = list(rand(0,1),rand(0,1),rand(0,1))
+
+eta = 0.2
+n = 100
+
+
+trdata = list(
+			list(list(0,0,1),0), #pattern is list( list(inputs,bias), expectedValue) , with bias always being 0
+			list(list(0,1,1),1),
+			list(list(1,0,1),1),
+			list(list(1,1,1),1)
+			)
+			
+
+
+
+finalweights = train(trdata,w,n)
+
+def tryall(data,weights){
+	if null?(data){
+		list()
+	}
+	else{
+		f = first(first(data))
+		rs = dotprod(weights,f)
+		act = unitstep(rs)
+		
+		print(first(f),"or",first(rest(f)),":",act)
+		
+		tryall(rest(data),weights)
+	}
+}
+
+#tryall(trdata)
+
+##genetic algorithm for my neuroevolution program
+
+
+def replace(lst,index,item,n = 0){ #generates a new list with the item in the specified index replace with the "item" argument
+	if null?(lst){
+		list()
+	}
+	else{
+		if(n != index){
+			prepend(replace(rest(lst),index,item,n+1),first(lst))
+		}
+		else{
+			prepend(replace(rest(lst),index,item,n+1),item)
+		}
+	}
+}
+
+
+def generatePopulation(n){ #generates a population of n individuals whose chromosomes are weights for the perceptron
+	if (n == 0){
+		list()
+	}
+	else{
+		randomWeights = list(randInt(0,2),randInt(0,2),randInt(0,2))
+		append(generatePopulation(n-1),randomWeights)
+	}	
+}
+
+def mutate(chromosome){
+	mutationPoint = randInt(0,length(chromosome)) #pick in random a gene/weight from the chromosome 
+	
+	replace(chromosome,mutationPoint,rand(-1,1)) #replace it with a new randomely generated gene
+	
+}
+
+def crossover(parentOne,parentTwo,n = 0){ #uniform crossover
+	if(n == 3){
+		list()
+	}
+	else{
+		chooseParent = randInt(0,2)
+		if chooseParent == 0 {
+			prepend(crossover(parentOne,parentTwo,n+1),nth(n,parentOne))
+		}
+		else{
+			prepend(crossover(parentOne,parentTwo,n+1),nth(n,parentTwo))
+		}
+	}
+}
+
+
+
+def evolve(population,fitnessFunction){ #elitist
+	base(fitnessFunction(nth(length(population)-1,population)) == 0){ #if the fitness of the first individual is 0 then we are done
+		nth(length(population)-1,population)
+	}
+	rec{
+		population = sortBy(fitnessFunction,population) #sort the population by fitness
+		child = crossover(nth(0,population),nth(1,population)) #mate the first two
+		child = mutate(child) #mutate the child
+		last = nth(length(population)-1,population)
+		if( fitnessFunction(child) <= fitnessFunction(last) ){ #f the new child is fitter than the worst in the population
+			population = replace(population,length(population)-1,child) #replace the degenerate with the child
+		}
+		evolve(population,fitnessFunction) #keep evolving
+		
+	}
+
+}
+
+def errorFuncHO(x){
+	errorFunc(trdata,x)
+}
+
+
+testpop = list(w,w,w)
+
+
+def fitV(lst){
+	errorR = errorFuncHO(lst)
+	return = 0
+	if(nth(0,errorR) != 0){
+		return = return + 1
+	}
+	if(nth(1,errorR) != 0){
+		return = return + 1
+	}
+	if(nth(2,errorR) != 0){
+		return = return + 1
+	}
+	if(nth(3,errorR) != 0){
+		return = return + 1
+	}
+	return
+}
+
+print("STARTING WEIGHTS: ",w)
+tryall(trdata,w)
+
+a = evolve(testpop,fitV)
+
+print("FINAL WEIGHTS:")
+
+print("feedforwared:",finalweights)
+
+tryall(trdata,finalweights)
+
+print("neuroevolved:",a)
+
+tryall(trdata,a)
